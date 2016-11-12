@@ -7,6 +7,9 @@ import { Col, Nav, NavItem } from 'react-bootstrap';
 // import style from './style.css';
 import PassengerForm from '../../components/Form/index';
 
+const sturcture = {
+};
+
 class App extends Component {
   static propTypes = {
     params: PropTypes.object,
@@ -18,14 +21,19 @@ class App extends Component {
     return (
         <div>
             <Col sm={2}>
-                <Nav bsStyle="pills" stacked={true} activeKey={1} onSelect={this.handleSelect}>
+                <Nav
+                    activeKey={1}
+                    bsStyle="pills"
+                    onSelect={this.handleSelect}
+                    stacked={true}
+                >
                     <NavItem eventKey={1}>Travel's Details</NavItem>
                     <NavItem eventKey={2}>Exchange Rates</NavItem>
                     <NavItem eventKey={3}>Expenses</NavItem>
                 </Nav>
             </Col>
             <Col sm={10}>
-                <PassengerForm />
+                <PassengerForm details={sturcture.details} onSubmit={value => console.log(value)} />
             </Col>
         </div>
     );

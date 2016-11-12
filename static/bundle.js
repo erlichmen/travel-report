@@ -7694,6 +7694,13 @@ webpackJsonp([1],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var sturcture = {};
+	// import classnames from 'classnames';
+	// import request from 'superagent';
+	
+	// import Navbar from '../../components/Navbar';
+	// import style from './style.css';
+	
 	var App = function (_Component) {
 	    (0, _inherits3.default)(App, _Component);
 	
@@ -7716,7 +7723,12 @@ webpackJsonp([1],[
 	                    { sm: 2 },
 	                    _react2.default.createElement(
 	                        _reactBootstrap.Nav,
-	                        { bsStyle: 'pills', stacked: true, activeKey: 1, onSelect: this.handleSelect },
+	                        {
+	                            activeKey: 1,
+	                            bsStyle: 'pills',
+	                            onSelect: this.handleSelect,
+	                            stacked: true
+	                        },
 	                        _react2.default.createElement(
 	                            _reactBootstrap.NavItem,
 	                            { eventKey: 1 },
@@ -7737,19 +7749,15 @@ webpackJsonp([1],[
 	                _react2.default.createElement(
 	                    _reactBootstrap.Col,
 	                    { sm: 10 },
-	                    _react2.default.createElement(_index2.default, null)
+	                    _react2.default.createElement(_index2.default, { details: sturcture.details, onSubmit: function onSubmit(value) {
+	                            return console.log(value);
+	                        } })
 	                )
 	            );
 	        }
 	    }]);
 	    return App;
 	}(_react.Component);
-	// import classnames from 'classnames';
-	// import request from 'superagent';
-	
-	// import Navbar from '../../components/Navbar';
-	// import style from './style.css';
-	
 	
 	App.propTypes = {
 	    params: _react.PropTypes.object
@@ -8699,7 +8707,7 @@ webpackJsonp([1],[
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	
 	var _getPrototypeOf = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ 489);
@@ -8744,245 +8752,408 @@ webpackJsonp([1],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var isValidText = function isValidText(text) {
+	  return Boolean(text) && Boolean(text.trim());
+	};
+	
+	var getTextValidationState = function getTextValidationState(text, pristine) {
+	  if (!pristine) {
+	    return null;
+	  }
+	  return isValidText(text) ? 'success' : 'error';
+	};
+	
 	var PassengerForm = function (_Component) {
-	    (0, _inherits3.default)(PassengerForm, _Component);
+	  (0, _inherits3.default)(PassengerForm, _Component);
 	
-	    function PassengerForm(props) {
-	        (0, _classCallCheck3.default)(this, PassengerForm);
+	  function PassengerForm(props) {
+	    (0, _classCallCheck3.default)(this, PassengerForm);
 	
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (PassengerForm.__proto__ || (0, _getPrototypeOf2.default)(PassengerForm)).call(this, props));
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (PassengerForm.__proto__ || (0, _getPrototypeOf2.default)(PassengerForm)).call(this, props));
 	
-	        _this.handleNameChange = function (e) {
-	            _this.setState({ passengerName: e.target.value });
-	        };
-	
-	        _this.handleCountryChange = function (e) {
-	            _this.setState({ country: e.target.value });
-	        };
-	
-	        _this.handleDepartmentChange = function (e) {
-	            _this.setState({ passengerDepartment: e.target.value });
-	        };
-	
-	        _this.handleNumberPassengersChange = function (e) {
-	            _this.setState({ numberOfPassengers: e.target.value });
-	        };
-	
-	        _this.handleDepartureChange = function (date) {
-	            var returnDate = _this.state.returnDate;
-	
-	            if (date.isAfter(returnDate)) {
-	                return _this.setState({ departureDate: returnDate, returnDate: date });
-	            }
-	            _this.setState({ departureDate: date });
-	        };
-	
-	        _this.handleReturnChange = function (date) {
-	            var departureDate = _this.state.departureDate;
-	
-	            if (date.isBefore(departureDate)) {
-	                return _this.setState({ returnDate: departureDate, departureDate: date });
-	            }
-	            _this.setState({ returnDate: date });
-	        };
-	
-	        _this.state = {
-	            passengerName: '',
-	            passengerDepartment: '',
-	            country: '',
-	            numberOfPassengers: 1,
-	            departureDate: (0, _moment2.default)(),
-	            returnDate: (0, _moment2.default)()
-	        };
-	        return _this;
-	    }
-	
-	    (0, _createClass3.default)(PassengerForm, [{
-	        key: 'render',
-	        value: function render() {
-	            var _state = this.state,
-	                passengerName = _state.passengerName,
-	                passengerDepartment = _state.passengerDepartment,
-	                country = _state.country,
-	                numberOfPassengers = _state.numberOfPassengers,
-	                departureDate = _state.departureDate,
-	                returnDate = _state.returnDate;
-	
-	
-	            var numberOfDays = returnDate.diff(departureDate, 'days') + 1;
-	            return _react2.default.createElement(
-	                _reactBootstrap.Form,
-	                { horizontal: true },
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    'Travel\'s Details'
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'passenger-name' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Passenger Name'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(_reactBootstrap.FormControl, {
-	                            type: 'text',
-	                            placeholder: 'Enter name',
-	                            onChange: this.handleNameChange,
-	                            value: passengerName
-	                        })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'passenger-department' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Passenger Department'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(_reactBootstrap.FormControl, {
-	                            type: 'text',
-	                            placeholder: 'Enter department',
-	                            onChange: this.handleDepartmentChange,
-	                            value: passengerDepartment
-	                        })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'destination-country' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Destination Country'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(_reactBootstrap.FormControl, {
-	                            type: 'text',
-	                            placeholder: 'Enter country',
-	                            onChange: this.handleCountryChange,
-	                            value: country
-	                        }),
-	                        _react2.default.createElement(
-	                            _reactBootstrap.HelpBlock,
-	                            null,
-	                            'Enter city and country'
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'number-of-passengers' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Number of Passengers'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(_reactBootstrap.FormControl, {
-	                            type: 'number',
-	                            onChange: this.handleNumberPassengersChange,
-	                            value: numberOfPassengers,
-	                            min: 0
-	                        })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'departure-date' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Departure Date'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(_reactDatepicker2.default, {
-	                            customInput: _react2.default.createElement(DatePickerButton, null),
-	                            onChange: this.handleDepartureChange,
-	                            selectsStart: true,
-	                            startDate: departureDate,
-	                            endDate: returnDate,
-	                            selected: departureDate })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'return-date' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Return Date'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(_reactDatepicker2.default, {
-	                            customInput: _react2.default.createElement(DatePickerButton, null),
-	                            onChange: this.handleReturnChange,
-	                            selectsEnd: true,
-	                            startDate: departureDate,
-	                            endDate: returnDate,
-	                            selected: returnDate })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactBootstrap.FormGroup,
-	                    { controlId: 'number-of-days' },
-	                    _react2.default.createElement(
-	                        _reactBootstrap.ControlLabel,
-	                        { className: 'col-sm-3' },
-	                        'Number of Days'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrap.Col,
-	                        { sm: 9 },
-	                        _react2.default.createElement(
-	                            _reactBootstrap.FormControl.Static,
-	                            null,
-	                            numberOfDays
-	                        )
-	                    )
-	                )
-	            );
+	    _this.handleNameChange = function (e) {
+	      _this.setState({ passengerName: {
+	          pristine: true,
+	          value: e.target.value
 	        }
-	    }]);
-	    return PassengerForm;
+	      });
+	    };
+	
+	    _this.handleCountryChange = function (e) {
+	      _this.setState({ country: {
+	          pristine: true,
+	          value: e.target.value
+	        }
+	      });
+	    };
+	
+	    _this.handleCityChange = function (e) {
+	      _this.setState({ city: {
+	          pristine: true,
+	          value: e.target.value
+	        }
+	      });
+	    };
+	
+	    _this.handleDepartmentChange = function (e) {
+	      _this.setState({ passengerDepartment: {
+	          pristine: true,
+	          value: e.target.value
+	        }
+	      });
+	    };
+	
+	    _this.handleNumberPassengersChange = function (e) {
+	      _this.setState({ numberOfPassengers: e.target.value });
+	    };
+	
+	    _this.handleDepartureChange = function (date) {
+	      var returnDate = _this.state.returnDate;
+	
+	      if (date.isAfter(returnDate)) {
+	        return _this.setState({ departureDate: returnDate, returnDate: date });
+	      }
+	      _this.setState({ departureDate: date });
+	    };
+	
+	    _this.handleReturnChange = function (date) {
+	      var departureDate = _this.state.departureDate;
+	
+	      if (date.isBefore(departureDate)) {
+	        return _this.setState({ returnDate: departureDate, departureDate: date });
+	      }
+	      _this.setState({ returnDate: date });
+	    };
+	
+	    _this.isFormValid = function () {
+	      var _this$state = _this.state,
+	          passengerName = _this$state.passengerName,
+	          passengerDepartment = _this$state.passengerDepartment,
+	          country = _this$state.country,
+	          city = _this$state.city;
+	
+	      return isValidText(passengerName.value) && isValidText(passengerDepartment.value) && isValidText(city.value) && isValidText(country.value);
+	    };
+	
+	    _this.handleSubmitClick = function () {
+	      var onSubmit = _this.props.onSubmit;
+	
+	      if (!_this.isFormValid()) {
+	        return;
+	      }
+	
+	      var _this$state2 = _this.state,
+	          name = _this$state2.passengerName.value,
+	          department = _this$state2.passengerDepartment.value,
+	          city = _this$state2.city.value,
+	          country = _this$state2.country.value,
+	          numberOfPassengers = _this$state2.numberOfPassengers,
+	          departureDate = _this$state2.departureDate,
+	          returnDate = _this$state2.returnDate;
+	
+	
+	      onSubmit({
+	        name: name,
+	        department: department,
+	        destination: {
+	          city: city,
+	          country: country
+	        },
+	        numberOfPassengers: numberOfPassengers,
+	        departureDate: departureDate.valueOf(),
+	        returnDate: returnDate.valueOf()
+	      });
+	    };
+	
+	    var details = props.details;
+	
+	    if (!details) {
+	      _this.state = {
+	        city: {
+	          pristine: false,
+	          value: ''
+	        },
+	        country: {
+	          pristine: false,
+	          value: ''
+	        },
+	        departureDate: (0, _moment2.default)(),
+	        numberOfPassengers: 1,
+	        passengerDepartment: {
+	          pristine: false,
+	          value: ''
+	        },
+	        passengerName: {
+	          pristine: false,
+	          value: ''
+	        },
+	        purpose: '',
+	        pristine: false,
+	        returnDate: (0, _moment2.default)()
+	      };
+	    } else {
+	      var name = details.name,
+	          department = details.department,
+	          destination = details.destination,
+	          numberOfPassengers = details.numberOfPassengers,
+	          departureDate = details.departureDate,
+	          returnDate = details.returnDate,
+	          purpose = details.purpose;
+	
+	      _this.state = {
+	        city: {
+	          pristine: true,
+	          value: destination.city
+	        },
+	        country: {
+	          pristine: true,
+	          value: destination.county
+	        },
+	        departureDate: (0, _moment2.default)(departureDate),
+	        numberOfPassengers: numberOfPassengers,
+	        passengerDepartment: {
+	          pristine: true,
+	          value: department
+	        },
+	        passengerName: {
+	          pristine: true,
+	          value: name
+	        },
+	        pristine: true,
+	        purpose: purpose,
+	        returnDate: (0, _moment2.default)(returnDate)
+	      };
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(PassengerForm, [{
+	    key: 'render',
+	    value: function render() {
+	      var _state = this.state,
+	          passengerName = _state.passengerName,
+	          passengerDepartment = _state.passengerDepartment,
+	          city = _state.city,
+	          country = _state.country,
+	          numberOfPassengers = _state.numberOfPassengers,
+	          departureDate = _state.departureDate,
+	          returnDate = _state.returnDate;
+	
+	
+	      var numberOfDays = returnDate.diff(departureDate, 'days') + 1;
+	      return _react2.default.createElement(
+	        _reactBootstrap.Form,
+	        { horizontal: true },
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Travel\'s Details'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          {
+	            controlId: 'passenger-name',
+	            validationState: getTextValidationState(passengerName.value, passengerName.pristine)
+	          },
+	          _react2.default.createElement(
+	            _reactBootstrap.ControlLabel,
+	            { className: 'col-sm-4' },
+	            'Passenger Name'
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Col,
+	            { sm: 8 },
+	            _react2.default.createElement(_reactBootstrap.FormControl, {
+	              onChange: this.handleNameChange,
+	              placeholder: 'Enter name',
+	              type: 'text',
+	              value: passengerName.value
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          {
+	            controlId: 'passenger-department',
+	            validationState: getTextValidationState(passengerDepartment.value, passengerDepartment.pristine)
+	          },
+	          _react2.default.createElement(
+	            _reactBootstrap.ControlLabel,
+	            { className: 'col-sm-4' },
+	            'Passenger Department'
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Col,
+	            { sm: 8 },
+	            _react2.default.createElement(_reactBootstrap.FormControl, {
+	              onChange: this.handleDepartmentChange,
+	              placeholder: 'Enter department',
+	              type: 'text',
+	              value: passengerDepartment.value
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'label',
+	          { className: 'control-label col-sm-4' },
+	          'Destination'
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          {
+	            className: _style2.default.destinationGroup,
+	            controlId: 'destination-country',
+	            validationState: getTextValidationState(country.value, country.pristine)
+	          },
+	          _react2.default.createElement(_reactBootstrap.FormControl, {
+	            onChange: this.handleCountryChange,
+	            placeholder: 'Enter country',
+	            type: 'text',
+	            value: country.value
+	          })
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          {
+	            className: _style2.default.destinationGroup,
+	            controlId: 'destination-city',
+	            validationState: getTextValidationState(city.value, city.pristine)
+	          },
+	          _react2.default.createElement(_reactBootstrap.FormControl, {
+	            onChange: this.handleCityChange,
+	            placeholder: 'Enter city',
+	            type: 'text',
+	            value: city.value
+	          })
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          { controlId: 'number-of-passengers' },
+	          _react2.default.createElement(
+	            _reactBootstrap.ControlLabel,
+	            { className: 'col-sm-4' },
+	            'Number of Passengers'
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Col,
+	            { sm: 8 },
+	            _react2.default.createElement(_reactBootstrap.FormControl, {
+	              min: 0,
+	              onChange: this.handleNumberPassengersChange,
+	              type: 'number',
+	              value: numberOfPassengers
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          { controlId: 'departure-date' },
+	          _react2.default.createElement(
+	            _reactBootstrap.ControlLabel,
+	            { className: 'col-sm-4' },
+	            'Departure Date'
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Col,
+	            { sm: 8 },
+	            _react2.default.createElement(_reactDatepicker2.default, {
+	              customInput: _react2.default.createElement(DatePickerButton, null),
+	              endDate: returnDate,
+	              onChange: this.handleDepartureChange,
+	              selected: departureDate,
+	              selectsStart: true,
+	              startDate: departureDate
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          { controlId: 'return-date' },
+	          _react2.default.createElement(
+	            _reactBootstrap.ControlLabel,
+	            { className: 'col-sm-4' },
+	            'Return Date'
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Col,
+	            { sm: 8 },
+	            _react2.default.createElement(_reactDatepicker2.default, {
+	              customInput: _react2.default.createElement(DatePickerButton, null),
+	              endDate: returnDate,
+	              onChange: this.handleReturnChange,
+	              selected: returnDate,
+	              selectsEnd: true,
+	              startDate: departureDate
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.FormGroup,
+	          { controlId: 'number-of-days' },
+	          _react2.default.createElement(
+	            _reactBootstrap.ControlLabel,
+	            { className: 'col-sm-4' },
+	            'Number of Days'
+	          ),
+	          _react2.default.createElement(
+	            _reactBootstrap.Col,
+	            { sm: 8 },
+	            _react2.default.createElement(
+	              _reactBootstrap.FormControl.Static,
+	              null,
+	              numberOfDays
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.Button,
+	          {
+	            bsStyle: 'primary',
+	            className: 'pull-right',
+	            disabled: !this.isFormValid(),
+	            onClick: this.handleSubmitClick
+	          },
+	          'Continue'
+	        )
+	      );
+	    }
+	  }]);
+	  return PassengerForm;
 	}(_react.Component);
 	
-	;
-	
+	PassengerForm.propTypes = {
+	  details: _react.PropTypes.shape({
+	    name: _react.PropTypes.string,
+	    department: _react.PropTypes.string,
+	    destination: _react.PropTypes.shape({
+	      county: _react.PropTypes.string,
+	      city: _react.PropTypes.string
+	    }),
+	    numberOfPassengers: _react.PropTypes.number,
+	    departureDate: _react.PropTypes.number,
+	    returnDate: _react.PropTypes.number,
+	    purpose: _react.PropTypes.string
+	  }),
+	  onSubmit: _react.PropTypes.func.isRequired
+	};
 	exports.default = PassengerForm;
 	
 	
 	var DatePickerButton = _react2.default.createClass({
-	    displayName: 'DatePickerButton',
+	  displayName: 'DatePickerButton',
 	
-	    propTypes: {
-	        onClick: _react.PropTypes.func,
-	        value: _react.PropTypes.string
-	    },
+	  propTypes: {
+	    onClick: _react.PropTypes.func,
+	    value: _react.PropTypes.string
+	  },
 	
-	    render: function render() {
-	        return _react2.default.createElement(
-	            _reactBootstrap.Button,
-	            { onClick: this.props.onClick },
-	            this.props.value
-	        );
-	    }
+	  render: function render() {
+	    return _react2.default.createElement(
+	      _reactBootstrap.Button,
+	      { onClick: this.props.onClick },
+	      this.props.value
+	    );
+	  }
 	});
 
 /***/ },
@@ -26381,10 +26552,12 @@ webpackJsonp([1],[
 	
 	
 	// module
-	exports.push([module.id, "form {\r\n    width: 700px;\r\n    margin: 0 auto;\r\n}\r\n", "", {"version":3,"sources":["/./components/Form/style.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,eAAe;CAClB","file":"style.css","sourcesContent":["form {\r\n    width: 700px;\r\n    margin: 0 auto;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "form {\r\n    width: 700px;\r\n    margin: 0 auto;\r\n}\r\n\r\n.style__destinationGroup___3_se_ {\r\n    display: inline-block;\r\n    padding: 0 25px;\r\n}\r\n", "", {"version":3,"sources":["/./components/Form/style.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,eAAe;CAClB;;AAED;IACI,sBAAsB;IACtB,gBAAgB;CACnB","file":"style.css","sourcesContent":["form {\r\n    width: 700px;\r\n    margin: 0 auto;\r\n}\r\n\r\n.destinationGroup {\r\n    display: inline-block;\r\n    padding: 0 25px;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
-
+	exports.locals = {
+		"destinationGroup": "style__destinationGroup___3_se_"
+	};
 
 /***/ },
 /* 695 */

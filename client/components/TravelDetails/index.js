@@ -17,13 +17,13 @@ const getTextValidationState = (text, pristine) => {
   return isValidText(text) ? 'success' : 'error';
 };
 
-class PassengerForm extends Component {
+class TravelDetails extends Component {
   static propTypes = {
     details: PropTypes.shape({
       name: PropTypes.string,
       department: PropTypes.string,
       destination: PropTypes.shape({
-        county: PropTypes.string,
+        country: PropTypes.string,
         city: PropTypes.string,
       }),
       numberOfPassengers: PropTypes.number,
@@ -58,12 +58,15 @@ class PassengerForm extends Component {
           pristine: false,
           value: '',
         },
-        purpose: '',
-        pristine: false,
+        purpose: {
+          pristine: false,
+          value: '',
+        },
         returnDate: moment(),
       };
     } else {
       const { name, department, destination, numberOfPassengers, departureDate, returnDate, purpose } = details;
+      console.log(destination);
       this.state = {
         city: {
           pristine: true,
@@ -71,7 +74,7 @@ class PassengerForm extends Component {
         },
         country: {
           pristine: true,
-          value: destination.county,
+          value: destination.country,
         },
         departureDate: moment(departureDate),
         numberOfPassengers,
@@ -83,8 +86,10 @@ class PassengerForm extends Component {
           pristine: true,
           value: name,
         },
-        pristine: true,
-        purpose,
+        purpose: {
+          pristine: true,
+          value: purpose,
+        },
         returnDate: moment(returnDate),
       };
     }
@@ -122,6 +127,14 @@ class PassengerForm extends Component {
     });
   }
 
+  handlePurposeChange = e => {
+    this.setState({ purpose: {
+      pristine: true,
+      value: e.target.value,
+    },
+    });
+  }
+
   handleNumberPassengersChange = e => {
     this.setState({ numberOfPassengers: e.target.value });
   }
@@ -143,11 +156,12 @@ class PassengerForm extends Component {
   }
 
   isFormValid = () => {
-    const { passengerName, passengerDepartment, country, city } = this.state;
+    const { passengerName, passengerDepartment, country, city, purpose } = this.state;
     return isValidText(passengerName.value) &&
            isValidText(passengerDepartment.value) &&
            isValidText(city.value) &&
-           isValidText(country.value);
+           isValidText(country.value) &&
+           isValidText(purpose.value);
   }
 
   handleSubmitClick = () => {
@@ -164,6 +178,7 @@ class PassengerForm extends Component {
       numberOfPassengers,
       departureDate,
       returnDate,
+      purpose: { value: purpose },
     } = this.state;
 
     onSubmit({
@@ -176,6 +191,7 @@ class PassengerForm extends Component {
       numberOfPassengers,
       departureDate: departureDate.valueOf(),
       returnDate: returnDate.valueOf(),
+      purpose,
     });
   }
 
@@ -188,6 +204,7 @@ class PassengerForm extends Component {
       numberOfPassengers,
       departureDate,
       returnDate,
+      purpose,
     } = this.state;
 
     const numberOfDays = returnDate.diff(departureDate, 'days') + 1;
@@ -203,6 +220,7 @@ class PassengerForm extends Component {
             <FormControl
                 onChange={this.handleNameChange}
                 placeholder="Enter name"
+                required
                 type="text"
                 value={passengerName.value}
             />
@@ -290,6 +308,20 @@ class PassengerForm extends Component {
                 <FormControl.Static>{numberOfDays}</FormControl.Static>
             </Col>
         </FormGroup>
+        <FormGroup
+            controlId="purpose"
+            validationState={getTextValidationState(purpose.value, purpose.pristine)}
+        >
+            <ControlLabel className="col-sm-4">Purpose</ControlLabel>
+            <Col sm={8}>
+            <FormControl
+                onChange={this.handlePurposeChange}
+                placeholder="Enter purpose"
+                type="text"
+                value={purpose.value}
+            />
+            </Col>
+        </FormGroup>
         <Button
             bsStyle="primary"
             className="pull-right"
@@ -301,7 +333,7 @@ class PassengerForm extends Component {
   }
 }
 
-export default PassengerForm;
+export default TravelDetails;
 
 const DatePickerButton = React.createClass({
     propTypes: {

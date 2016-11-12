@@ -1,0 +1,9 @@
+form {
+    width: 700px;
+    margin: 0 auto;
+}
+
+.destinationGroup {
+    display: inline-block;
+    padding: 0 25px;
+}

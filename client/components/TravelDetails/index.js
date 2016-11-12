@@ -26,7 +26,6 @@ class TravelDetails extends Component {
         country: PropTypes.string,
         city: PropTypes.string,
       }),
-      numberOfPassengers: PropTypes.number,
       departureDate: PropTypes.number,
       returnDate: PropTypes.number,
       purpose: PropTypes.string,
@@ -66,7 +65,6 @@ class TravelDetails extends Component {
       };
     } else {
       const { name, department, destination, numberOfPassengers, departureDate, returnDate, purpose } = details;
-      console.log(destination);
       this.state = {
         city: {
           pristine: true,

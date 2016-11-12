@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Col, Nav, NavItem } from 'react-bootstrap';
 
 import './style.css';
-import TravelDetails from '../../components/Form/index';
+import TravelDetails from '../../components/TravelDetails/index';
+import ExchangeRates from '../../components/Rates/index';
 
 const DEFAULT_STAGE = 'DETAILS';
 const RATES = 'RATES';
@@ -54,7 +55,8 @@ class App extends Component {
                 />
                 }
                 { stage === RATES &&
-                  <div>Rates</div>
+                  <ExchangeRates
+                    onSubmit={value => console.log(value)} />
                 }
                 { stage === EXPENSES &&
                   <div>Expenses</div>

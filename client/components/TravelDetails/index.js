@@ -136,7 +136,7 @@ class TravelDetails extends Component {
   }
 
   handleNumberPassengersChange = e => {
-    this.setState({ numberOfPassengers: e.target.value });
+    this.setState({ numberOfPassengers: parseInt(e.target.value) });
   }
 
   handleDepartureChange = date => {

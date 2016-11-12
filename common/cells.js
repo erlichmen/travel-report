@@ -1,0 +1,47 @@
+module.exports = {
+  NAME: 'C4',
+  DEPARTMENT: 'C5',
+  DESTINATION: 'C6',
+  NUMBER_OF_PASSENGERS: 'C7',
+  DEPARTURE_DATE: 'C9',
+  RETURN_DATE: 'C10',
+  TOTAL_NUMBER_OF_DAYS: 'C11',
+  PURPOSE: 'C13',
+
+  CURRENCY_USD: 'I5',
+  CURRENCY_EURO: 'I6',
+  CURRENCY_GBP: 'I7',
+  CURRENCY_UAH: 'I8',
+  CURRENCY_OTHER_NAME: ['H9','H10','H11','H12'],
+  CURRENCY_OTHER_VALUE: ['I9','I10','I11','I12'],
+
+  EXPENSES_COLUMNS:{
+    NAME: 2,
+    COST: {
+      USD: 5,
+      NIS: 6,
+    },
+    COMMENTS: 7,
+  },
+  EXPENSES_ROWS:{
+    EXPENSES_START:21,
+    FLIGHTS: 22,
+    HOTEL:24,
+    RENTAL_CAR:26,
+    PUBLIC_TRANSPORTATION:28,
+    COMUNICATION:30,
+    CONFERENCE:31,
+    OTHER:32,
+  },
+
+  TOTAL_COLUMNS:{
+    USD: 'E',
+    NIS: 'F',
+  },
+  TOTAL_ROWS:{
+    LIVING: 27,
+    TRANSPORTATION: 29,
+    // GENERAL: 34,
+    TOTAL: 35,
+  },
+};

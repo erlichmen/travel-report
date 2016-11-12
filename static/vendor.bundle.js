@@ -108,7 +108,7 @@
 	__webpack_require__(/*! react-router-redux */97);
 	__webpack_require__(/*! superagent */527);
 	__webpack_require__(/*! redux */109);
-	module.exports = __webpack_require__(/*! classnames */532);
+	module.exports = __webpack_require__(/*! classnames */533);
 
 
 /***/ },
@@ -31513,7 +31513,8 @@
 
 
 /***/ },
-/* 532 */
+/* 532 */,
+/* 533 */
 /*!********************************!*\
   !*** ../~/classnames/index.js ***!
   \********************************/

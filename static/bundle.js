@@ -7802,14 +7802,20 @@ webpackJsonp([1],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _superagent = __webpack_require__(/*! superagent */ 527);
 	
-	// import classnames from 'classnames';
-	// import request from 'superagent';
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _structure = __webpack_require__(/*! ../../../docs/structure */ 532);
+	
+	var _structure2 = _interopRequireDefault(_structure);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// import Navbar from '../../components/Navbar';
 	// import style from './style.css';
 	
+	// import classnames from 'classnames';
 	var App = function (_Component) {
 	  (0, _inherits3.default)(App, _Component);
 	
@@ -7819,6 +7825,17 @@ webpackJsonp([1],[
 	  }
 	
 	  (0, _createClass3.default)(App, [{
+	    key: 'handleRequest',
+	    value: function handleRequest() {
+	      _superagent2.default.post('/api/export').set('Accept', 'application/json').set('Content-Type', 'application/json').send(_structure2.default).end(function (err, res) {
+	        if (err) {
+	          console.error(err);
+	        } else {
+	          console.log(res.body);
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var params = this.props.params;
@@ -7827,7 +7844,16 @@ webpackJsonp([1],[
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'hi'
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.handleRequest },
+	          'REQUEST'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'hi'
+	        )
 	      );
 	    }
 	  }]);
@@ -8771,6 +8797,104 @@ webpackJsonp([1],[
 	var $export = __webpack_require__(/*! ./_export */ 277)
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 	$export($export.S, 'Object', {create: __webpack_require__(/*! ./_object-create */ 321)});
+
+/***/ },
+/* 527 */,
+/* 528 */,
+/* 529 */,
+/* 530 */,
+/* 531 */,
+/* 532 */
+/*!****************************!*\
+  !*** ../docs/structure.js ***!
+  \****************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  details: {
+	    name: 'Dean Shub',
+	    department: 'R&D',
+	    destination: {
+	      country: 'US New york',
+	      city: 'manhattan'
+	    },
+	    numberOfPassengers: 1, // default 1
+	    departureDate: new Date(),
+	    returnDate: new Date(),
+	    totalNumberOfDays: 4, // autofill with editable
+	    purpose: 'sisense connect event' },
+	  currencyRates: {
+	    usd: 4.23,
+	    euro: 3.25, // optional
+	    gbp: 3.25, // optional
+	    uah: 3.25, // optional
+	    other: [//optional
+	    {
+	      name: 'franks',
+	      rate: 5235
+	    }]
+	  },
+	  expenses: {
+	    flights: [//optional
+	    {
+	      name: 'baggage',
+	      cost: 524.54,
+	      currency: 'usd'
+	    }, {
+	      name: 'baggage',
+	      cost: 52.44,
+	      currency: 'franks',
+	      comments: 'had to add another bag and air france only recives franks' }],
+	    hotel: [//optional
+	    {
+	      name: 'salt lake city hotel',
+	      cost: 152,
+	      currency: 'usd',
+	      comments: 'was not paid by sisense' }],
+	    rentalCar: [//optional
+	    {
+	      name: 'Rent',
+	      cost: 152,
+	      currency: 'usd',
+	      comments: 'was not paid by sisense' }, {
+	      name: 'Fuel',
+	      cost: 15,
+	      currency: 'usd',
+	      comments: 'was not paid by sisense' }],
+	    publicTransportation: [// optional
+	    {
+	      name: 'taxi', // default taxi
+	      date: new Date(),
+	      description: 'from airport to hotel', // will not exist if chosen something other then taxi\bus\subway\train
+	      cost: 152,
+	      currency: 'usd',
+	      comments: 'was not paid by sisense' }],
+	    comunication: [// optional
+	    {
+	      name: 'sim card',
+	      cost: 152,
+	      currency: 'usd',
+	      comments: 'was not paid by sisense' }],
+	    conference: [// optional
+	    {
+	      name: 'geektime devfest',
+	      cost: 152,
+	      currency: 'usd',
+	      comments: 'was not paid by sisense' }],
+	    other: [// optional
+	    {
+	      name: 'Resturant',
+	      cost: 112,
+	      currency: 'usd',
+	      comments: 'steaks with customers' }, {
+	      name: 'Resturant',
+	      cost: 1102,
+	      currency: 'nis',
+	      comments: 'steaks with other customers' }]
+	  }
+	};
 
 /***/ }
 ]);

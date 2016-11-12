@@ -2,7 +2,7 @@ module.exports = {
   details:{
     name: 'Dean Shub',
     department: 'R&D',
-    destenation: {
+    destination: {
       country: 'US New york',
       city: 'manhattan',
     },
@@ -10,7 +10,7 @@ module.exports = {
     departureDate: new Date(),
     returnDate: new Date(),
     totalNumberOfDays: 4, // autofill with editable
-    purpose: '', // dont allow 'buisness'
+    purpose: 'sisense connect event', // dont allow 'buisness'
   },
   currencyRates:{
     usd: 4.23,
@@ -92,6 +92,12 @@ module.exports = {
         cost: 112,
         currency: 'usd',
         comments: 'steaks with customers', // optional within optional
+      },
+      {
+        name: 'Resturant',
+        cost: 1102,
+        currency: 'nis',
+        comments: 'steaks with other customers', // optional within optional
       },
     ],
   },

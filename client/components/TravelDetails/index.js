@@ -217,7 +217,7 @@ class TravelDetails extends Component {
             <Col sm={8}>
             <FormControl
                 onChange={this.handleNameChange}
-                placeholder="Enter name"
+                placeholder="Firstname and Lastname"
                 required
                 type="text"
                 value={passengerName.value}
@@ -232,7 +232,7 @@ class TravelDetails extends Component {
             <Col sm={8}>
                 <FormControl
                     onChange={this.handleDepartmentChange}
-                    placeholder="Enter department"
+                    placeholder="R&D\ PS\ Sales\ ..."
                     type="text"
                     value={passengerDepartment.value}
                 />
@@ -246,7 +246,7 @@ class TravelDetails extends Component {
         >
             <FormControl
                 onChange={this.handleCountryChange}
-                placeholder="Enter country"
+                placeholder="US\ IL\ ..."
                 type="text"
                 value={country.value}
             />
@@ -258,7 +258,7 @@ class TravelDetails extends Component {
         >
             <FormControl
                 onChange={this.handleCityChange}
-                placeholder="Enter city"
+                placeholder="NY\ Tel-Aviv\ ..."
                 type="text"
                 value={city.value}
             />
@@ -310,11 +310,11 @@ class TravelDetails extends Component {
             controlId="purpose"
             validationState={getTextValidationState(purpose.value, purpose.pristine)}
         >
-            <ControlLabel className="col-sm-4">Purpose</ControlLabel>
+            <ControlLabel className="col-sm-4">Travel Purpose</ControlLabel>
             <Col sm={8}>
             <FormControl
                 onChange={this.handlePurposeChange}
-                placeholder="Enter purpose"
+                placeholder="Sisense Connect event\ Strata conference\ ..."
                 type="text"
                 value={purpose.value}
             />

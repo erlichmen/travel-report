@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, FormGroup, FormControl, ControlLabel, Button, Col, HelpBlock } from 'react-bootstrap';
 
+import NewRate from './NewRate';
+
 import './style.css';
 
 class ExchangeRates extends Component {
@@ -16,6 +18,8 @@ class ExchangeRates extends Component {
 
     this.state = {
       usd: 0,
+      isAdding: false,
+      addedRates: [],
     };
   }
 
@@ -38,14 +42,70 @@ class ExchangeRates extends Component {
       euro,
       gbp,
       uah,
+      addedRates
     } = this.state;
 
-    onSubmit({
+    const dataToReturn = {
       usd,
       euro,
       gbp,
-      uah,
+      uah
+    };
+
+    addedRates.forEach(({ name, value }) => dataToReturn[name] = value);
+
+    onSubmit(dataToReturn);
+  }
+
+  handleAddRate = () => {
+    this.setState({ isAdding: true });
+  }
+
+  handleAddedRate = newRate => {
+    if (!newRate) {
+        return this.setState({ isAdding: false });
+    }
+
+    const oldAddedRates = this.state.addedRates;
+    const newAddedRates = [...oldAddedRates, newRate];
+
+    this.setState({
+        isAdding: false,
+        addedRates: newAddedRates
     });
+  }
+
+  changeRate = (name, newValue) => {
+      const oldAddedRates = this.state.addedRates;
+      const index = oldAddedRates.findIndex(rate => rate.name === name);
+
+      if (index < 0) {
+        return;
+      }
+
+      const newAddedRates = [
+          ...oldAddedRates.slice(0, index),
+          { name, value: newValue },
+          ...oldAddedRates.slice(index + 1)
+      ];
+
+      this.setState({ addedRates: newAddedRates });
+  }
+
+  removeRate = name => {
+      const oldAddedRates = this.state.addedRates;
+      const index = oldAddedRates.findIndex(rate => rate.name === name);
+
+      if (index < 0) {
+        return;
+      }
+
+      const newAddedRates = [
+          ...oldAddedRates.slice(0, index),
+          ...oldAddedRates.slice(index + 1)
+      ];
+
+      this.setState({ addedRates: newAddedRates });
   }
 
   render() {
@@ -54,6 +114,8 @@ class ExchangeRates extends Component {
       euro,
       gbp,
       uah,
+      isAdding,
+      addedRates,
     } = this.state;
 
     return (
@@ -106,12 +168,29 @@ class ExchangeRates extends Component {
             />
             </Col>
         </FormGroup>
+        { addedRates.map(({ name, value }) => {
+            return (
+                <FormGroup key={name}>
+                    <ControlLabel className="col-sm-3 form-label">{name.toUpperCase()}</ControlLabel>
+                    <Col sm={2}>
+                        <FormControl
+                            type="number"
+                            value={value}
+                            onChange={e => this.changeRate(name, e.target.value)}
+                        />
+                    </Col>
+                    <Button onClick={() => this.removeRate(name)}>Remove</Button>
+                </FormGroup>
+            )
+        })}
         <Button
             bsStyle="primary"
             className="pull-right"
             disabled={!this.isFormValid()}
             onClick={this.handleSubmitClick}
         >Continue</Button>
+        <Button onClick={this.handleAddRate}>Add Rate</Button>
+        { isAdding && <NewRate closeModal={this.handleAddedRate} /> }
       </Form>
     );
   }

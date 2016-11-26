@@ -4,3 +4,4 @@ yarn.lock
 static/bundle*
 static/vendor*
 .DS_Store
+output/

@@ -17,14 +17,13 @@ class ExchangeRates extends Component {
     super(props);
 
     this.state = {
-      usd: 0,
       isAdding: false,
       addedRates: [],
     };
   }
 
   handleUSDChange = e => {
-    this.setState({ usd: e.target.value });
+    this.setState({ usd: parseFloat(e.target.value) });
   }
 
   isFormValid = () => {
@@ -42,14 +41,14 @@ class ExchangeRates extends Component {
       euro,
       gbp,
       uah,
-      addedRates
+      addedRates,
     } = this.state;
 
     const dataToReturn = {
       usd,
       euro,
       gbp,
-      uah
+      uah,
     };
 
     addedRates.forEach(({ name, value }) => dataToReturn[name] = value);
@@ -63,49 +62,49 @@ class ExchangeRates extends Component {
 
   handleAddedRate = newRate => {
     if (!newRate) {
-        return this.setState({ isAdding: false });
+      return this.setState({ isAdding: false });
     }
 
     const oldAddedRates = this.state.addedRates;
     const newAddedRates = [...oldAddedRates, newRate];
 
     this.setState({
-        isAdding: false,
-        addedRates: newAddedRates
+      isAdding: false,
+      addedRates: newAddedRates,
     });
   }
 
   changeRate = (name, newValue) => {
-      const oldAddedRates = this.state.addedRates;
-      const index = oldAddedRates.findIndex(rate => rate.name === name);
+    const oldAddedRates = this.state.addedRates;
+    const index = oldAddedRates.findIndex(rate => rate.name === name);
 
-      if (index < 0) {
-        return;
-      }
+    if (index < 0) {
+      return;
+    }
 
-      const newAddedRates = [
-          ...oldAddedRates.slice(0, index),
-          { name, value: newValue },
-          ...oldAddedRates.slice(index + 1)
-      ];
+    const newAddedRates = [
+      ...oldAddedRates.slice(0, index),
+      { name, value: newValue },
+      ...oldAddedRates.slice(index + 1),
+    ];
 
-      this.setState({ addedRates: newAddedRates });
+    this.setState({ addedRates: newAddedRates });
   }
 
   removeRate = name => {
-      const oldAddedRates = this.state.addedRates;
-      const index = oldAddedRates.findIndex(rate => rate.name === name);
+    const oldAddedRates = this.state.addedRates;
+    const index = oldAddedRates.findIndex(rate => rate.name === name);
 
-      if (index < 0) {
-        return;
-      }
+    if (index < 0) {
+      return;
+    }
 
-      const newAddedRates = [
-          ...oldAddedRates.slice(0, index),
-          ...oldAddedRates.slice(index + 1)
-      ];
+    const newAddedRates = [
+      ...oldAddedRates.slice(0, index),
+      ...oldAddedRates.slice(index + 1),
+    ];
 
-      this.setState({ addedRates: newAddedRates });
+    this.setState({ addedRates: newAddedRates });
   }
 
   render() {
@@ -169,7 +168,7 @@ class ExchangeRates extends Component {
             </Col>
         </FormGroup>
         { addedRates.map(({ name, value }) => {
-            return (
+          return (
                 <FormGroup key={name}>
                     <ControlLabel className="col-sm-3 form-label">{name.toUpperCase()}</ControlLabel>
                     <Col sm={2}>
@@ -181,7 +180,7 @@ class ExchangeRates extends Component {
                     </Col>
                     <Button onClick={() => this.removeRate(name)}>Remove</Button>
                 </FormGroup>
-            )
+            );
         })}
         <Button
             bsStyle="primary"

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import request from 'superagent';
-import mockData from '../../../docs/structure';
+// import mockData from '../../../docs/structure';
 import { Col, Nav, NavItem } from 'react-bootstrap';
 
 import './style.css';
-import TravelDetails from '../../components/TravelDetails/index';
-import ExchangeRates from '../../components/Rates/index';
+import TravelDetails from '../../components/TravelDetails';
+import ExchangeRates from '../../components/Rates';
+import Expenses from '../../components/Expenses';
 
 const DEFAULT_STAGE = 'DETAILS';
 const RATES = 'RATES';
@@ -21,16 +22,43 @@ class App extends Component {
     };
   }
 
-  handleRequest(){
-    request.post('/api/export')
+  saveData(blob, fileName) {
+    let a = document.createElement('a');
+    a.style = 'display: none';
+    document.body.appendChild(a);
+    let url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  handleSendRequest(){
+    request.post('/api/post')
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
-    .send(mockData)
+    // .send(mockData)
+    .send(this.state.data)
     .end((err, res)=>{
       if (err) {
         console.error(err);
       }else{
         console.log(res.body);
+      }
+    });
+  }
+
+  handleExportRequest(){
+    request.post('/api/export')
+    .responseType('blob')
+    // .send(mockData)
+    .send(this.state.data)
+    .end((err, res)=>{
+      if (err) {
+        console.error(err);
+      }else{
+        // console.log(res.body);
+        this.saveData(res.xhr.response, 'travel-report.xlsx');
       }
     });
   }
@@ -44,6 +72,20 @@ class App extends Component {
 
     const newData = Object.assign({}, oldData, { details: data });
     this.setState({ data: newData, stage: RATES });
+  }
+
+  handleRatesSubmit = data => {
+    const { data: oldData } = this.state;
+
+    const newData = Object.assign({}, oldData, { currencyRates: data });
+    this.setState({ data: newData, stage: EXPENSES });
+  }
+
+  handleExpensesSubmit = data => {
+    const { data: oldData } = this.state;
+
+    const newData = Object.assign({}, oldData, { expenses: data });
+    this.setState({ data: newData, stage: DEFAULT_STAGE });
   }
 
   render() {
@@ -61,6 +103,16 @@ class App extends Component {
                     <NavItem eventKey={DEFAULT_STAGE}>Travel's Details</NavItem>
                     <NavItem eventKey={RATES}>Exchange Rates</NavItem>
                     <NavItem eventKey={EXPENSES}>Expenses</NavItem>
+                    <NavItem
+                      onClick={::this.handleExportRequest}
+                    >
+                      Download Travel Report
+                    </NavItem>
+                    <NavItem
+                      onClick={::this.handleSendRequest}
+                    >
+                      Submit Travel Report
+                    </NavItem>
                 </Nav>
             </Col>
             <Col sm={10}>
@@ -72,13 +124,15 @@ class App extends Component {
                 }
                 { stage === RATES &&
                   <ExchangeRates
-                    onSubmit={value => console.log(value)} />
+                      onSubmit={this.handleRatesSubmit}
+                  />
                 }
                 { stage === EXPENSES &&
-                  <div>Expenses</div>
+                  <Expenses
+                    onSubmit={this.handleExpensesSubmit}
+                  />
                 }
             </Col>
-            <button onClick={this.handleRequest}>REQUEST</button>
         </div>
     );
   }

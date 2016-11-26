@@ -6,7 +6,7 @@
   "scripts": {
     "server": "node index.js",
     "start": "webpack --progress --colors && node index.js",
-    "dev": "concurrently \"webpack -d --progress --colors --watch\" \"node index.js\"",
+    "dev": "concurrently \"webpack -d --progress --colors --watch\" \"nodemon index.js\"",
     "build": "NODE_ENV=production webpack --progress --colors"
   },
   "repository": {
@@ -52,7 +52,7 @@
     "sass-loader": "^4.0.2",
     "stream-http": "^2.4.0",
     "style-loader": "^0.13.1",
-    "superagent": "^2.3.0",
+    "superagent": "^3.0.0",
     "webpack": "^1.13.2"
   },
   "author": {

@@ -140,7 +140,7 @@ class TravelDetails extends Component {
   handleDepartureChange = date => {
     const { returnDate } = this.state;
     if (date.isAfter(returnDate)) {
-      return this.setState({ departureDate: returnDate, returnDate: date });
+      return this.setState({ departureDate: returnDate, returnDate: date});
     }
     this.setState({ departureDate: date });
   }
@@ -148,7 +148,7 @@ class TravelDetails extends Component {
   handleReturnChange = date => {
     const { departureDate } = this.state;
     if (date.isBefore(departureDate)) {
-      return this.setState({ returnDate: departureDate, departureDate: date });
+      return this.setState({ returnDate: departureDate, departureDate: date});
     }
     this.setState({ returnDate: date });
   }
@@ -178,6 +178,7 @@ class TravelDetails extends Component {
       returnDate,
       purpose: { value: purpose },
     } = this.state;
+    const totalNumberOfDays = returnDate.diff(departureDate, 'days') + 1;
 
     onSubmit({
       name,
@@ -190,6 +191,7 @@ class TravelDetails extends Component {
       departureDate: departureDate.valueOf(),
       returnDate: returnDate.valueOf(),
       purpose,
+      totalNumberOfDays
     });
   }
 
@@ -334,16 +336,16 @@ class TravelDetails extends Component {
 export default TravelDetails;
 
 const DatePickerButton = React.createClass({
-    propTypes: {
-        onClick: PropTypes.func,
-        value: PropTypes.string
-    },
+  propTypes: {
+    onClick: PropTypes.func,
+    value: PropTypes.string,
+  },
 
-    render () {
-        return (
-            <Button onClick={this.props.onClick} >
-                {this.props.value}
-            </Button>
-        )
-    }
+  render () {
+    return (
+        <Button onClick={this.props.onClick} >
+            {this.props.value}
+        </Button>
+    );
+  },
 });

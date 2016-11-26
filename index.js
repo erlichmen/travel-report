@@ -15,8 +15,21 @@ app.use(bodyParser.urlencoded({
 app.post('/api/export', (req, res)=>{
   utils.objectToExcelFile(req.body)
   .then(fileName=>{
+    console.log('done1');
+    res.sendFile(fileName);
+  })
+  .catch(err=>{
+    console.error(err);
+    res.json({err});
+  });
+});
+
+app.post('/api/post', (req, res)=>{
+  utils.objectToExcelFile(req.body)
+  .then(utils.sendEmail)
+  .then(details=>{
     console.log('done2');
-    res.json(fileName);
+    res.json(details);
   })
   .catch(err=>{
     console.error(err);

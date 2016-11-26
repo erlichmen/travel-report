@@ -243,12 +243,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Flights', startRow, startRow + (rowsAddedCounter-1));
       }
-      const filghtsStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, filghtsStyle);
+      if (rowsAddedCounter>0){
+        const filghtsStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, filghtsStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -260,12 +262,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Hotel', startRow, startRow + (rowsAddedCounter-1));
       }
-      const hotelStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, hotelStyle);
+      if (rowsAddedCounter>0){
+        const hotelStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, hotelStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -274,11 +278,13 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>0){
         rowsToTotal.push({start:startRow ,end:startRow + rowsAddedCounter});
       }
-      const eshelStyle = {
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, eshelStyle);
+      if (rowsAddedCounter>0){
+        const eshelStyle = {
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, eshelStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -289,12 +295,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Rental Car', startRow, startRow + (rowsAddedCounter-1));
       }
-      const rentalStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, rentalStyle);
+      if (rowsAddedCounter>0){
+        const rentalStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, rentalStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -305,12 +313,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Public Transopation', startRow, startRow + (rowsAddedCounter-1));
       }
-      const transportaionStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, transportaionStyle);
+      if (rowsAddedCounter>0){
+        const transportaionStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, transportaionStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -321,12 +331,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Communication', startRow, startRow + (rowsAddedCounter-1));
       }
-      const comunicationStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, comunicationStyle);
+      if (rowsAddedCounter>0){
+        const comunicationStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, comunicationStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -337,12 +349,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Conference/Exhibition', startRow, startRow + (rowsAddedCounter-1));
       }
-      const conferenceStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, conferenceStyle);
+      if (rowsAddedCounter>0){
+        const conferenceStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, conferenceStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -355,12 +369,14 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       if (rowsAddedCounter>1){
         rowsAddedCounter += addTempTotalRow(worksheet, 'Other', startRow, startRow + (rowsAddedCounter-1));
       }
-      const otherStyle = {
-        MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
-        ALIGN: { vertical: 'middle', horizontal: 'center' },
-        FONT: {bold:true},
-      };
-      styleCell(worksheet, `A${startRow}`, otherStyle);
+      if (rowsAddedCounter>0){
+        const otherStyle = {
+          MERGE: `A${startRow}:A${startRow+rowsAddedCounter-1}`,
+          ALIGN: { vertical: 'middle', horizontal: 'center' },
+          FONT: {bold:true},
+        };
+        styleCell(worksheet, `A${startRow}`, otherStyle);
+      }
 
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
@@ -392,8 +408,14 @@ module.exports={
       }).then(workbook=>{
         return workbook.xlsx.writeFile(outputFileName);
       }).then(()=>{
-        return resolve(data.details);
+        // return resolve(data.details);
+        return resolve(outputFileName);
       });
+    });
+  },
+  sendEmail:(filePath)=>{
+    return new Promise((resolve, reject)=>{
+      return resolve(filePath);
     });
   },
 };

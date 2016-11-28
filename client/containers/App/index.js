@@ -12,7 +12,7 @@ const DEFAULT_STAGE = 'DETAILS';
 const RATES = 'RATES';
 const EXPENSES = 'EXPENSES';
 
-class App extends Component {
+export default class App extends Component {
 
   constructor(props){
     super(props);
@@ -50,6 +50,7 @@ class App extends Component {
 
   handleExportRequest(){
     request.post('/api/export')
+    .set('Content-Type', 'application/json')
     .responseType('blob')
     // .send(mockData)
     .send(this.state.data)
@@ -58,7 +59,10 @@ class App extends Component {
         console.error(err);
       }else{
         // console.log(res.body);
-        this.saveData(res.xhr.response, 'travel-report.xlsx');
+        const {details} = this.state.data;
+        const datesString = `${new Date(details.departureDate).toLocaleDateString().replace(/\//g,'_')}-${new Date(details.returnDate).toLocaleDateString().replace(/\//g,'_')}`;
+
+        this.saveData(res.xhr.response, `${details.name} ${datesString}.xlsx`);
       }
     });
   }
@@ -67,21 +71,21 @@ class App extends Component {
     this.setState({ stage: key });
   }
 
-  handleTravelsDetailsSubmit = data => {
+  handleTravelsDetailsSubmit(data) {
     const { data: oldData } = this.state;
 
     const newData = Object.assign({}, oldData, { details: data });
     this.setState({ data: newData, stage: RATES });
   }
 
-  handleRatesSubmit = data => {
+  handleRatesSubmit(data) {
     const { data: oldData } = this.state;
 
     const newData = Object.assign({}, oldData, { currencyRates: data });
     this.setState({ data: newData, stage: EXPENSES });
   }
 
-  handleExpensesSubmit = data => {
+  handleExpensesSubmit(data){
     const { data: oldData } = this.state;
 
     const newData = Object.assign({}, oldData, { expenses: data });
@@ -119,17 +123,17 @@ class App extends Component {
                 { stage === DEFAULT_STAGE &&
                 <TravelDetails
                     details={data.details}
-                    onSubmit={this.handleTravelsDetailsSubmit}
+                    onSubmit={::this.handleTravelsDetailsSubmit}
                 />
                 }
                 { stage === RATES &&
                   <ExchangeRates
-                      onSubmit={this.handleRatesSubmit}
+                      onSubmit={::this.handleRatesSubmit}
                   />
                 }
                 { stage === EXPENSES &&
                   <Expenses
-                    onSubmit={this.handleExpensesSubmit}
+                      onSubmit={::this.handleExpensesSubmit}
                   />
                 }
             </Col>
@@ -137,5 +141,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

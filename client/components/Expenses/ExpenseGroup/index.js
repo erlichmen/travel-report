@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, ButtonToolbar, FormGroup, FormControl, ControlLabel, Button, Col, HelpBlock, Glyphicon } from 'react-bootstrap';
-import Expense from '../Expense'
+import { ButtonToolbar, FormGroup, Button, Col, Glyphicon } from 'react-bootstrap';
+import Expense from '../Expense';
 
 export default class ExpenseGroup extends Component {
   static propTypes = {
     items: PropTypes.array,
-    onChange: PropTypes.func.required,
-    title: PropTypes.string.required,
+    onChange: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
   }
 
   handleItemChange(index, item){
@@ -39,6 +39,7 @@ export default class ExpenseGroup extends Component {
         {
           items.map((item, index)=>
             <Expense
+                key={index}
                 item={item}
                 onChange={item=>this.handleItemChange(index, item)}
             />

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Button} from 'react-bootstrap';
-import ExpenseGroup from './ExpenseGroup'
+import ExpenseGroup from './ExpenseGroup';
 
 export default class Expenses extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func.required,
+    onSubmit: PropTypes.func.isRequired,
   }
 
   constructor(props){

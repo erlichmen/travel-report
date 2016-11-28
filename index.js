@@ -3,6 +3,7 @@ const path = require('path');
 var bodyParser = require('body-parser');
 
 const utils = require('./common/utils');
+const mail = require('./common/mail');
 
 const app = express();
 const PORT = process.env.port||8889;
@@ -14,9 +15,9 @@ app.use(bodyParser.urlencoded({
 //Information
 app.post('/api/export', (req, res)=>{
   utils.objectToExcelFile(req.body)
-  .then(fileName=>{
+  .then(({filePath})=>{
     console.log('done1');
-    res.sendFile(fileName);
+    res.sendFile(filePath);
   })
   .catch(err=>{
     console.error(err);
@@ -26,7 +27,7 @@ app.post('/api/export', (req, res)=>{
 
 app.post('/api/post', (req, res)=>{
   utils.objectToExcelFile(req.body)
-  .then(utils.sendEmail)
+  .then(mail.sendMail)
   .then(details=>{
     console.log('done2');
     res.json(details);

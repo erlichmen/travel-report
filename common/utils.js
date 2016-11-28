@@ -83,9 +83,14 @@ function fillPersonalDetails(worksheet, details, currencyRates) {
   }
 }
 
-function addExpenses(worksheet, expenses, title, rowNumber) {
+function addCompanyExpenses(worksheet, expenses, title, rowNumber) {
+  return addExpenses(worksheet, expenses, title, rowNumber, true);
+}
+
+function addExpenses(worksheet, expenses, title, rowNumber, company) {
   if (expenses){
     const newRows = expenses.map((expense)=>{
+      console.log(expense.name);
       let rowValues = [];
       rowValues[CELLS.EXPENSES_COLUMNS.TITLE]=title;
       rowValues[CELLS.EXPENSES_COLUMNS.NAME] = expense.description ? `${expense.name}, ${expense.description} - ${(new Date(expense.date)).toLocaleDateString()}`: expense.name;
@@ -106,9 +111,16 @@ function addExpenses(worksheet, expenses, title, rowNumber) {
         };
       }
       if (expense.cost){
-        worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).value={
-          formula: `${CELLS.TOTAL_COLUMNS.NIS}$${currentRowNumber}`,
-        };
+        if (company){
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).value=0;
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+currentRowNumber).value={
+            formula: `${CELLS.TOTAL_COLUMNS.NIS}$${currentRowNumber}`,
+          };
+        }else{
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).value={
+            formula: `${CELLS.TOTAL_COLUMNS.NIS}$${currentRowNumber}`,
+          };
+        }
       }
 
       styleCell(worksheet, `G${currentRowNumber}`, {MERGE: `G${currentRowNumber}:I${currentRowNumber}`});
@@ -200,7 +212,7 @@ function addTempTotalRow(worksheet, title, startRow, endRow){
   return 1;
 }
 
-function fillFooter(worksheet, startRow){
+function fillFooter(worksheet, startRow, eshelRowIndex){
   let advanceRow = [];
   advanceRow[CELLS.FOOTER_LABLES.ADVANCE.COLUMN]=CELLS.FOOTER_LABLES.ADVANCE.VALUE;
   let refundRow = [];
@@ -220,6 +232,9 @@ function fillFooter(worksheet, startRow){
 
   const newRows = [[],[], advanceRow, refundRow, [],[], signatureRow, [], fillRow, [],[], financeRow, fillRow];
   worksheet.spliceRows(startRow, 1, ...newRows);
+  worksheet.getCell(`${CELLS.FOOTER_LABLES.REFUND_VALUE_COLUMN}${(startRow + newRows.indexOf(refundRow))}`).value = {
+    formula: `${CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS}${startRow-1}+${CELLS.TOTAL_COLUMNS.COMPANY_NIS}${eshelRowIndex}-${CELLS.FOOTER_LABLES.ADVANCE_VALUE_COLUMN}${(startRow + newRows.indexOf(advanceRow))}`,
+  };
 }
 
 function fillWorkbook(workbook, {details, currencyRates, expenses}){
@@ -232,6 +247,7 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
     let rowsToTotal = [];
     let startRow = CELLS.EXPENSES_ROWS.EXPENSES_START;
     let rowsAddedCounter = 0;
+    let eshelRowIndex;
 
     if (expenses){
       rowsAddedCounter = 0;
@@ -274,7 +290,8 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
       const eshelExpense = Object.assign({}, dummyExpense[0], {comments:'65$ per day', cost:65});
-      rowsAddedCounter += addExpenses(worksheet, [eshelExpense], '"Eshel"', startRow + rowsAddedCounter);
+      rowsAddedCounter += addCompanyExpenses(worksheet, [eshelExpense], '"Eshel"', startRow + rowsAddedCounter);
+      eshelRowIndex = startRow;
       if (rowsAddedCounter>0){
         rowsToTotal.push({start:startRow ,end:startRow + rowsAddedCounter});
       }
@@ -386,7 +403,7 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
     }
 
     startRow = startRow + rowsAddedCounter;
-    fillFooter(worksheet, startRow);
+    fillFooter(worksheet, startRow, eshelRowIndex);
 
     resolve(workbook);
   });
@@ -409,13 +426,8 @@ module.exports={
         return workbook.xlsx.writeFile(outputFileName);
       }).then(()=>{
         // return resolve(data.details);
-        return resolve(outputFileName);
+        return resolve({filePath:outputFileName, details: data.details});
       });
-    });
-  },
-  sendEmail:(filePath)=>{
-    return new Promise((resolve, reject)=>{
-      return resolve(filePath);
     });
   },
 };

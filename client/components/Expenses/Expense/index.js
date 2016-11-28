@@ -3,8 +3,8 @@ import { Form, ButtonToolbar, FormGroup, FormControl, ControlLabel, Button, Col,
 
 export default class Expense extends Component {
   static propTypes = {
-    item: PropTypes.obj,
-    onChange: PropTypes.func.required,
+    item: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
   }
 
   handlePropertyChange(e){
@@ -23,7 +23,7 @@ export default class Expense extends Component {
         <ControlLabel className="col-sm-1">Type</ControlLabel>
         <Col sm={8}>
         <FormControl
-            id="type"
+            id="name"
             onChange={::this.handlePropertyChange}
             required
         />

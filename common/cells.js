@@ -172,10 +172,12 @@ module.exports = {
       COLUMN: 1,
       VALUE: 'Advance paid to employee',
     },
+    ADVANCE_VALUE_COLUMN:'E',
     REFUND:{
       COLUMN: 1,
       VALUE: 'Employee Refund',
     },
+    REFUND_VALUE_COLUMN:'E',
 
     DATE:{
       COLUMN: 2,

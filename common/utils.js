@@ -415,18 +415,22 @@ module.exports={
         return reject(new Error('no data found'));
       }
 
-      const datesString = `${new Date(data.details.departureDate).toLocaleDateString().replace(/\//g,'_')}-${new Date(data.details.returnDate).toLocaleDateString().replace(/\//g,'_')}`;
-      const outputFileName = path.join(__dirname, '../output', `${data.details.name} ${datesString}.xlsx`);
+      if(data && data.details && data.details.departureDate && data.details.returnDate && data.details.name){
+        const datesString = `${new Date(data.details.departureDate).toLocaleDateString().replace(/\//g,'_')}-${new Date(data.details.returnDate).toLocaleDateString().replace(/\//g,'_')}`;
+        const outputFileName = path.join(__dirname, '../output', `${data.details.name} ${datesString}.xlsx`);
 
-      return copyTemplateExcel(outputFileName, data)
-      .then(workbook=>{
-        return fillWorkbook(workbook, data);
-      }).then(workbook=>{
-        return workbook.xlsx.writeFile(outputFileName);
-      }).then(()=>{
-        // return resolve(data.details);
-        return resolve({filePath:outputFileName, details: data.details});
-      });
+        return copyTemplateExcel(outputFileName, data)
+        .then(workbook=>{
+          return fillWorkbook(workbook, data);
+        }).then(workbook=>{
+          return workbook.xlsx.writeFile(outputFileName);
+        }).then(()=>{
+          // return resolve(data.details);
+          return resolve({filePath:outputFileName, details: data.details});
+        });
+      }else{
+        reject('no details');
+      }
     });
   },
 };

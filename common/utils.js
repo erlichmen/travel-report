@@ -90,7 +90,6 @@ function addCompanyExpenses(worksheet, expenses, title, rowNumber) {
 function addExpenses(worksheet, expenses, title, rowNumber, company) {
   if (expenses){
     const newRows = expenses.map((expense)=>{
-      console.log(expense.name);
       let rowValues = [];
       rowValues[CELLS.EXPENSES_COLUMNS.TITLE]=title;
       rowValues[CELLS.EXPENSES_COLUMNS.NAME] = expense.description ? `${expense.name}, ${expense.description} - ${(new Date(expense.date)).toLocaleDateString()}`: expense.name;

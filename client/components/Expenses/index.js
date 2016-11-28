@@ -4,20 +4,33 @@ import ExpenseGroup from './ExpenseGroup';
 
 export default class Expenses extends Component {
   static propTypes = {
+    expenses: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
   }
 
   constructor(props){
     super(props);
-    this.state = {
-      flights:[],
-      hotel:[],
-      rentalCar:[],
-      publicTransportation:[],
-      comunication:[],
-      conference:[],
-      other:[],
-    };
+    if (props.expenses){
+      this.state = {
+        flights:props.expenses.flights || [],
+        hotel:props.expenses.hotel || [],
+        rentalCar:props.expenses.rentalCar || [],
+        publicTransportation:props.expenses.publicTransportation || [],
+        comunication:props.expenses.comunication || [],
+        conference:props.expenses.conference || [],
+        other:props.expenses.other || [],
+      };
+    }else{
+      this.state = {
+        flights:[],
+        hotel:[],
+        rentalCar:[],
+        publicTransportation:[],
+        comunication:[],
+        conference:[],
+        other:[],
+      };
+    }
   }
 
   handleItemsChange(itemsName, items){

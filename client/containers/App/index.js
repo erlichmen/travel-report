@@ -129,10 +129,12 @@ export default class App extends Component {
                 { stage === RATES &&
                   <ExchangeRates
                       onSubmit={::this.handleRatesSubmit}
+                      rates={data.currencyRates}
                   />
                 }
                 { stage === EXPENSES &&
                   <Expenses
+                      expenses={data.expenses}
                       onSubmit={::this.handleExpensesSubmit}
                   />
                 }

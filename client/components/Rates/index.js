@@ -10,6 +10,9 @@ class ExchangeRates extends Component {
     onSubmit: PropTypes.func.isRequired,
     rates: PropTypes.shape({
       usd: PropTypes.number,
+      euro: PropTypes.number,
+      gbp: PropTypes.number,
+      uah: PropTypes.number,
     }),
   }
 
@@ -17,6 +20,10 @@ class ExchangeRates extends Component {
     super(props);
 
     this.state = {
+      usd:props.rates&&props.rates.usd?props.rates.usd:undefined,
+      euro:props.rates&&props.rates.euro?props.rates.euro:undefined,
+      gbp:props.rates&&props.rates.gbp?props.rates.gbp:undefined,
+      uah:props.rates&&props.rates.uah?props.rates.uah:undefined,
       isAdding: false,
       addedRates: [],
     };
@@ -169,18 +176,18 @@ class ExchangeRates extends Component {
         </FormGroup>
         { addedRates.map(({ name, value }) => {
           return (
-                <FormGroup key={name}>
-                    <ControlLabel className="col-sm-3 form-label">{name.toUpperCase()}</ControlLabel>
-                    <Col sm={2}>
-                        <FormControl
-                            type="number"
-                            value={value}
-                            onChange={e => this.changeRate(name, e.target.value)}
-                        />
-                    </Col>
-                    <Button onClick={() => this.removeRate(name)}>Remove</Button>
-                </FormGroup>
-            );
+            <FormGroup key={name}>
+                <ControlLabel className="col-sm-3 form-label">{name.toUpperCase()}</ControlLabel>
+                <Col sm={2}>
+                    <FormControl
+                        type="number"
+                        value={value}
+                        onChange={e => this.changeRate(name, e.target.value)}
+                    />
+                </Col>
+                <Button onClick={() => this.removeRate(name)}>Remove</Button>
+            </FormGroup>
+          );
         })}
         <Button
             bsStyle="primary"

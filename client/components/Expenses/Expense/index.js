@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, ButtonToolbar, FormGroup, FormControl, ControlLabel, Button, Col, HelpBlock, Glyphicon } from 'react-bootstrap';
+import { FormControl, ControlLabel, Col, HelpBlock } from 'react-bootstrap';
 
 export default class Expense extends Component {
   static propTypes = {
@@ -18,6 +18,8 @@ export default class Expense extends Component {
   }
 
   render() {
+    const {item} = this.props;
+
     return (
       <Col sm={12}>
         <ControlLabel className="col-sm-1">Type</ControlLabel>
@@ -26,6 +28,7 @@ export default class Expense extends Component {
             id="name"
             onChange={::this.handlePropertyChange}
             required
+            value={item['name']}
         />
         </Col>
         <Col sm={3}>
@@ -39,6 +42,7 @@ export default class Expense extends Component {
               onChange={::this.handlePropertyChange}
               required
               type="number"
+              value={item['cost']}
           />
         </Col>
         <Col sm={3}>
@@ -46,6 +50,7 @@ export default class Expense extends Component {
               id="currency"
               onChange={::this.handlePropertyChange}
               required
+              value={item['currency']}
           />
         </Col>
         <Col sm={3}>
@@ -57,6 +62,7 @@ export default class Expense extends Component {
               id="comments"
               onChange={::this.handlePropertyChange}
               placeholder="Comments"
+              value={item['comments']}
           />
         </Col>
       </Col>

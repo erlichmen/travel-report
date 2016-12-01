@@ -16,7 +16,7 @@ module.exports = {
         Dates: ${datesString}
         `,
         from:    'Travel Report <travel@sisense.com>',
-        to:      'Soophie <dean.shub@sisense.com>',
+        to:      'Soophie <sophie.shachar@sisense.com>',
         // cc:      'else <else@your-email.com>',
         subject: `Travel Report - ${details.name}`,
         attachment:

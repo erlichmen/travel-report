@@ -29,8 +29,8 @@ class ExchangeRates extends Component {
     };
   }
 
-  handleUSDChange = e => {
-    this.setState({ usd: parseFloat(e.target.value) });
+  handleCurrencyChange = (e,cureency) => {
+    this.setState({ [cureency]: parseFloat(e.target.value) });
   }
 
   isFormValid = () => {
@@ -133,7 +133,7 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">USD</ControlLabel>
             <Col sm={2}>
             <FormControl
-                onChange={this.handleUSDChange}
+                onChange={e=>this.handleCurrencyChange(e, 'usd')}
                 required
                 type="number"
                 value={usd}
@@ -147,6 +147,7 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">EURO</ControlLabel>
             <Col sm={2}>
             <FormControl
+                onChange={e=>this.handleCurrencyChange(e, 'euro')}
                 type="number"
                 value={euro}
             />
@@ -158,6 +159,7 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">GBP</ControlLabel>
             <Col sm={2}>
             <FormControl
+                onChange={e=>this.handleCurrencyChange(e, 'gbp')}
                 type="number"
                 value={gbp}
             />
@@ -169,6 +171,7 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">UAH</ControlLabel>
             <Col sm={2}>
             <FormControl
+                onChange={e=>this.handleCurrencyChange(e, 'uah')}
                 type="number"
                 value={uah}
             />

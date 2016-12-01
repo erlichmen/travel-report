@@ -95,7 +95,7 @@ export default class App extends Component {
   render() {
     const { stage, data } = this.state;
     const currencies = data.currencyRates? Object.keys(data.currencyRates).filter(key=>data.currencyRates[key]!==undefined):[];
-    console.log(currencies);
+    console.log(data.currencyRates, currencies);
     return (
         <div>
             <Col sm={2}>

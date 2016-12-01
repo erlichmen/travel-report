@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Form, FormGroup, FormControl, ControlLabel, Button, Col } from 'react-bootstrap';
+import request from 'superagent';
 import consts from '../../store/consts';
 
 import style from './style.css';
@@ -20,6 +21,7 @@ const getTextValidationState = (text, pristine) => {
 
 class TravelDetails extends Component {
   static propTypes = {
+    changeCurrency: PropTypes.func.isRequired,
     details: PropTypes.shape({
       name: PropTypes.string,
       department: PropTypes.string,
@@ -144,6 +146,19 @@ class TravelDetails extends Component {
       return this.setState({ departureDate: returnDate, returnDate: date});
     }
     this.setState({ departureDate: date });
+
+    request.get(`/api/rate/01/${date.toDate().toLocaleDateString('il-HE',{year:'numeric'})}/${date.toDate().toLocaleDateString('il-HE',{month:'numeric'})}/${date.toDate().toLocaleDateString('il-HE',{day:'numeric'})}`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .end((err, res)=>{
+      if (err) {
+        console.error(err);
+      }else{
+        if(res.body){
+          this.props.changeCurrency({usd: res.body.CURRENCIES.CURRENCY[0].RATE[0]});
+        }
+      }
+    });
   }
 
   handleReturnChange = date => {

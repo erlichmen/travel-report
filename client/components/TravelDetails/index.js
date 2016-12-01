@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Form, FormGroup, FormControl, ControlLabel, Button, Col } from 'react-bootstrap';
+import consts from '../../store/consts';
 
 import style from './style.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -233,11 +234,15 @@ class TravelDetails extends Component {
             <ControlLabel className="col-sm-4">Passenger Department</ControlLabel>
             <Col sm={8}>
                 <FormControl
+                    componentClass="select"
                     onChange={this.handleDepartmentChange}
                     placeholder="R&D\ PS\ Sales\ ..."
-                    type="text"
                     value={passengerDepartment.value}
-                />
+                >
+                  {
+                    consts.departments.map(department=><option value={department}>{department}</option>)
+                  }
+                </FormControl>
             </Col>
         </FormGroup>
         <label className="control-label col-sm-4">Destination</label>

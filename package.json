@@ -4,6 +4,7 @@
   "description": "PM2 Web interface",
   "main": "index.js",
   "scripts": {
+    "webpack": "webpack -d --progress --colors --watch",
     "server": "node index.js",
     "start": "webpack --progress --colors && node index.js",
     "prod": "set port=80&& webpack --progress --colors && node index.js",

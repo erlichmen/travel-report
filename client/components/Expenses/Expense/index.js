@@ -3,8 +3,12 @@ import { FormControl, ControlLabel, Col, HelpBlock } from 'react-bootstrap';
 
 export default class Expense extends Component {
   static propTypes = {
+    currencies: PropTypes.arrayOf(PropTypes.string),
     item: PropTypes.object,
     onChange: PropTypes.func.isRequired,
+  }
+  static defaultProps = {
+    currencies: ['usd'],
   }
 
   handlePropertyChange(e){
@@ -18,7 +22,7 @@ export default class Expense extends Component {
   }
 
   render() {
-    const {item} = this.props;
+    const {item, currencies} = this.props;
 
     return (
       <Col sm={12}>
@@ -47,11 +51,16 @@ export default class Expense extends Component {
         </Col>
         <Col sm={3}>
           <FormControl
+              componentClass="select"
               id="currency"
               onChange={::this.handlePropertyChange}
               required
               value={item['currency']}
-          />
+          >
+            {
+              currencies.map(currency=><option value={currency}>{currency.toUpperCase()}</option>)
+            }
+          </FormControl>
         </Col>
         <Col sm={3}>
           <HelpBlock>This is required</HelpBlock>

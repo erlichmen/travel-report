@@ -8,6 +8,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import configure from './store';
 import App from './containers/App';
+import './style/bootstrap.min.css';
 // whyDidYouUpdate(React);
 
 const store = configure();

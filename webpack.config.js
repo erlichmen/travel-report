@@ -38,11 +38,19 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: /client/,
+        include: /client\\components|client\\containers/,
         loaders: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
           'postcss-loader',
+        ],
+      },
+      {
+        test: /\.css$/,
+        include: /client\\style/,
+        loaders: [
+          'style',
+          'css',
         ],
       },
       {

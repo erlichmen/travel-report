@@ -4,6 +4,7 @@ import ExpenseGroup from './ExpenseGroup';
 
 export default class Expenses extends Component {
   static propTypes = {
+    currencies: PropTypes.arrayOf(PropTypes.string),
     expenses: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
   }
@@ -67,6 +68,7 @@ export default class Expenses extends Component {
   }
 
   render(){
+    const {currencies} = this.props;
     const {
       flights,
       hotel,
@@ -81,36 +83,43 @@ export default class Expenses extends Component {
       <Form horizontal>
         <h2>Expenses</h2>
           <ExpenseGroup
+              currencies={currencies}
               items={flights}
               onChange={(flights)=> this.handleItemsChange('flights', flights)}
               title="Flights"
           />
           <ExpenseGroup
+              currencies={currencies}
               items={hotel}
               onChange={(hotel)=> this.handleItemsChange('hotel', hotel)}
               title="Hotels"
           />
           <ExpenseGroup
+              currencies={currencies}
               items={rentalCar}
               onChange={(rentalCar)=> this.handleItemsChange('rentalCar', rentalCar)}
               title="Rental Car"
           />
           <ExpenseGroup
+              currencies={currencies}
               items={publicTransportation}
               onChange={(publicTransportation)=> this.handleItemsChange('publicTransportation', publicTransportation)}
               title="Public Transportation"
           />
           <ExpenseGroup
+              currencies={currencies}
               items={comunication}
               onChange={(comunication)=> this.handleItemsChange('comunication', comunication)}
               title="Comunication"
           />
           <ExpenseGroup
+              currencies={currencies}
               items={conference}
               onChange={(conference)=> this.handleItemsChange('conference', conference)}
               title="Conference/ Exhibition"
           />
           <ExpenseGroup
+              currencies={currencies}
               items={other}
               onChange={(other)=> this.handleItemsChange('other', other)}
               title="Other"

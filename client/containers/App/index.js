@@ -94,7 +94,8 @@ export default class App extends Component {
 
   render() {
     const { stage, data } = this.state;
-
+    const currencies = data.currencyRates? Object.keys(data.currencyRates).filter(key=>data.currencyRates[key]!==undefined):[];
+    console.log(currencies);
     return (
         <div>
             <Col sm={2}>
@@ -134,6 +135,7 @@ export default class App extends Component {
                 }
                 { stage === EXPENSES &&
                   <Expenses
+                      currencies={currencies}
                       expenses={data.expenses}
                       onSubmit={::this.handleExpensesSubmit}
                   />

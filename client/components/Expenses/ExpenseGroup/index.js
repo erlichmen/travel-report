@@ -4,6 +4,7 @@ import Expense from '../Expense';
 
 export default class ExpenseGroup extends Component {
   static propTypes = {
+    currencies: PropTypes.arrayOf(PropTypes.string),
     items: PropTypes.array,
     onChange: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
@@ -22,7 +23,7 @@ export default class ExpenseGroup extends Component {
   }
 
   render() {
-    const {title, items} = this.props;
+    const {title, items, currencies} = this.props;
 
     return (
       <FormGroup
@@ -39,6 +40,7 @@ export default class ExpenseGroup extends Component {
         {
           items.map((item, index)=>
             <Expense
+                currencies={currencies}
                 key={index}
                 item={item}
                 onChange={item=>this.handleItemChange(index, item)}

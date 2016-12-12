@@ -146,17 +146,28 @@ class TravelDetails extends Component {
       return this.setState({ departureDate: returnDate, returnDate: date});
     }
     this.setState({ departureDate: date });
+    let apiDate = date.toDate();
+    if (apiDate.getDay()===6){
+      apiDate.setDate(apiDate.getDate()-1);
+    }else if (apiDate.getDay()===0){
+      apiDate.setDate(apiDate.getDate()-2);
+    }
 
-    request.get(`/api/rate/01/${date.toDate().toLocaleDateString('il-HE',{year:'numeric'})}/${date.toDate().toLocaleDateString('il-HE',{month:'numeric'})}/${date.toDate().toLocaleDateString('il-HE',{day:'numeric'})}`)
+    request.get(`/api/rate/01/${apiDate.toLocaleDateString('il-HE',{year:'numeric'})}/${apiDate.toLocaleDateString('il-HE',{month:'numeric'})}/${apiDate.toLocaleDateString('il-HE',{day:'numeric'})}`)
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
     .end((err, res)=>{
       if (err) {
         console.error(err);
-      }else{
-        if(res.body){
-          this.props.changeCurrency({usd: res.body.CURRENCIES.CURRENCY[0].RATE[0]});
-        }
+      }
+      if (res.body && res.body.CURRENCIES && res.body.CURRENCIES.CURRENCY===undefined){
+        console.error(res.body.CURRENCIES);
+      }
+
+      if(!err && res.body && res.body.CURRENCIES && res.body.CURRENCIES.CURRENCY){
+        this.props.changeCurrency({usd: res.body.CURRENCIES.CURRENCY[0].RATE[0]});
+      }else {
+        this.props.changeCurrency({usd: undefined});
       }
     });
   }
@@ -194,7 +205,7 @@ class TravelDetails extends Component {
       returnDate,
       purpose: { value: purpose },
     } = this.state;
-    const totalNumberOfDays = returnDate.diff(departureDate, 'days') + 1;
+    const totalNumberOfDays = returnDate.diff(departureDate, 'days') - 1;
 
     onSubmit({
       name,

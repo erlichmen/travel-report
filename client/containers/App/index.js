@@ -93,23 +93,20 @@ export default class App extends Component {
   }
 
   changeCurrency(currency){
-    if (currency.usd !== undefined){
-      const { data: oldData } = this.state;
-      const {currencyRates} = oldData;
+    console.log(currency);
+    const { data: oldData } = this.state;
+    const {currencyRates} = oldData;
 
-      if (currencyRates===undefined || currencyRates.usd===undefined){
-        const newCurrencyRates = Object.assign({}, currencyRates, { usd: currency.usd });
-        const newData = Object.assign({}, oldData, { currencyRates: newCurrencyRates });
+    const newCurrencyRates = Object.assign({}, currencyRates, { usd: currency.usd });
+    const newData = Object.assign({}, oldData, { currencyRates: newCurrencyRates });
 
-        this.setState({ data: newData });
-      }
-    }
+    this.setState({ data: newData });
   }
 
   render() {
     const { stage, data } = this.state;
-    const currencies = data.currencyRates? Object.keys(data.currencyRates).filter(key=>data.currencyRates[key]!==undefined):[];
-    console.log(data.currencyRates, currencies);
+    const currencies = data.currencyRates? Object.keys(data.currencyRates).filter(key=>data.currencyRates[key]!==undefined).concat(['nis']):[];
+
     return (
         <div>
             <Col sm={2}>

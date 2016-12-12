@@ -89,11 +89,14 @@ function addCompanyExpenses(worksheet, expenses, title, rowNumber) {
 
 function addExpenses(worksheet, expenses, title, rowNumber, company) {
   if (expenses){
+    console.log(expenses);
     const newRows = expenses.map((expense)=>{
       let rowValues = [];
       rowValues[CELLS.EXPENSES_COLUMNS.TITLE]=title;
       rowValues[CELLS.EXPENSES_COLUMNS.NAME] = expense.description ? `${expense.name}, ${expense.description} - ${(new Date(expense.date)).toLocaleDateString()}`: expense.name;
-      rowValues[CELLS.EXPENSES_COLUMNS.COST[expense.currency.toUpperCase()]] = expense.cost;
+      if (!company){
+        rowValues[CELLS.EXPENSES_COLUMNS.COST[expense.currency.toUpperCase()]] = expense.cost;
+      }
       if (expense.comments){
         rowValues[CELLS.EXPENSES_COLUMNS.COMMENTS] = expense.comments;
       }
@@ -111,6 +114,9 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
       }
       if (expense.cost){
         if (company){
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.USD +currentRowNumber).value={
+            formula: `65*${CELLS.TOTAL_NUMBER_OF_DAYS}`,
+          };
           worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).value=0;
           worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+currentRowNumber).value={
             formula: `${CELLS.TOTAL_COLUMNS.NIS}$${currentRowNumber}`,

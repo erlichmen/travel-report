@@ -8,7 +8,7 @@ export default class Expense extends Component {
     onChange: PropTypes.func.isRequired,
   }
   static defaultProps = {
-    currencies: ['usd'],
+    currencies: ['usd','nis'],
   }
 
   handlePropertyChange(e){

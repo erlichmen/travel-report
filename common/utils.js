@@ -106,9 +106,13 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
 
     expenses.forEach((expense, index)=>{
       const currentRowNumber = rowNumber+index;
-      if ((expense.currency||'usd').toUpperCase()!=='NIS'){
+      if ((expense.currency||'usd').toUpperCase()==='USD'){
         worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).value={
           formula: `$${CELLS.CURRENCY_USD.split('').join('$')}*$${CELLS.TOTAL_COLUMNS.USD}${currentRowNumber}`,
+        };
+      } else if ((expense.currency||'usd').toUpperCase()==='NIS'){
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).value={
+          formula: `$${CELLS.TOTAL_COLUMNS.NIS}${currentRowNumber}/$${CELLS.CURRENCY_USD.split('').join('$')}`,
         };
       }
       if (expense.cost){

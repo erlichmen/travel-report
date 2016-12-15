@@ -89,13 +89,12 @@ function addCompanyExpenses(worksheet, expenses, title, rowNumber) {
 
 function addExpenses(worksheet, expenses, title, rowNumber, company) {
   if (expenses){
-    console.log(expenses);
     const newRows = expenses.map((expense)=>{
       let rowValues = [];
       rowValues[CELLS.EXPENSES_COLUMNS.TITLE]=title;
       rowValues[CELLS.EXPENSES_COLUMNS.NAME] = expense.description ? `${expense.name}, ${expense.description} - ${(new Date(expense.date)).toLocaleDateString()}`: expense.name;
       if (!company){
-        rowValues[CELLS.EXPENSES_COLUMNS.COST[expense.currency.toUpperCase()]] = expense.cost;
+        rowValues[CELLS.EXPENSES_COLUMNS.COST[(expense.currency||'usd').toUpperCase()]] = expense.cost;
       }
       if (expense.comments){
         rowValues[CELLS.EXPENSES_COLUMNS.COMMENTS] = expense.comments;
@@ -107,7 +106,7 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
 
     expenses.forEach((expense, index)=>{
       const currentRowNumber = rowNumber+index;
-      if (expense.currency.toUpperCase()!=='NIS'){
+      if ((expense.currency||'usd').toUpperCase()!=='NIS'){
         worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).value={
           formula: `$${CELLS.CURRENCY_USD.split('').join('$')}*$${CELLS.TOTAL_COLUMNS.USD}${currentRowNumber}`,
         };

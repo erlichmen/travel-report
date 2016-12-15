@@ -266,7 +266,7 @@ class TravelDetails extends Component {
                     value={passengerDepartment.value}
                 >
                   {
-                    consts.departments.map(department=><option value={department}>{department}</option>)
+                    consts.departments.map(department=><option key={department} value={department}>{department}</option>)
                   }
                 </FormControl>
             </Col>

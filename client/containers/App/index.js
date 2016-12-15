@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import request from 'superagent';
-// import mockData from '../../../docs/structure';
+// import mockData from '../../../docs/sofi.js';
 import { Col, Nav, NavItem } from 'react-bootstrap';
 
 import './style.css';
@@ -93,7 +93,6 @@ export default class App extends Component {
   }
 
   changeCurrency(currency){
-    console.log(currency);
     const { data: oldData } = this.state;
     const {currencyRates} = oldData;
 

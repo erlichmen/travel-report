@@ -110,24 +110,30 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
         worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).value={
           formula: `$${CELLS.CURRENCY_USD.split('').join('$')}*$${CELLS.TOTAL_COLUMNS.USD}${currentRowNumber}`,
         };
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).numFmt = '0.00';
       } else if ((expense.currency||'usd').toUpperCase()==='NIS'){
         worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).value={
           formula: `$${CELLS.TOTAL_COLUMNS.NIS}${currentRowNumber}/$${CELLS.CURRENCY_USD.split('').join('$')}`,
         };
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).numFmt = '0.00';
       }
       if (expense.cost){
         if (company){
           worksheet.getCell(CELLS.TOTAL_COLUMNS.USD +currentRowNumber).value={
             formula: `65*${CELLS.TOTAL_NUMBER_OF_DAYS}`,
           };
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.USD +currentRowNumber).numFmt = '0.00';
+
           worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).value=0;
           worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+currentRowNumber).value={
             formula: `${CELLS.TOTAL_COLUMNS.NIS}$${currentRowNumber}`,
           };
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+currentRowNumber).numFmt = '0.00';
         }else{
           worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).value={
             formula: `${CELLS.TOTAL_COLUMNS.NIS}$${currentRowNumber}`,
           };
+          worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).numFmt = '0.00';
         }
       }
 
@@ -162,15 +168,22 @@ function addTotalRow(worksheet, title, startRow, rowsToTotal) {
   worksheet.getCell(CELLS.TOTAL_COLUMNS.USD + startRow).value = {
     formula: `SUM(${sums[CELLS.TOTAL_COLUMNS.USD]})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.USD + startRow).numFmt = '0.00';
+
   worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS + startRow).value = {
     formula: `SUM(${sums[CELLS.TOTAL_COLUMNS.NIS]})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS + startRow).numFmt = '0.00';
+
   worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS + startRow).value = {
     formula: `SUM(${sums[CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS]})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS + startRow).numFmt = '0.00';
+
   worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS + startRow).value = {
     formula: `SUM(${sums[CELLS.TOTAL_COLUMNS.COMPANY_NIS]})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS + startRow).numFmt = '0.00';
 
   const style = {
     BACKGROUND:'AFAFAF',
@@ -196,15 +209,23 @@ function addTempTotalRow(worksheet, title, startRow, endRow){
   worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+ (endRow+1)).value = {
     formula: `SUM(${CELLS.TOTAL_COLUMNS.USD}${startRow}:${CELLS.TOTAL_COLUMNS.USD}${endRow})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+ (endRow+1)).numFmt = '0.00';
+
   worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+ (endRow+1)).value = {
     formula: `SUM(${CELLS.TOTAL_COLUMNS.NIS}${startRow}:${CELLS.TOTAL_COLUMNS.NIS}${endRow})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+ (endRow+1)).numFmt = '0.00';
+
   worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+ (endRow+1)).value = {
     formula: `SUM(${CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS}${startRow}:${CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS}${endRow})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+ (endRow+1)).numFmt = '0.00';
+
   worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+ (endRow+1)).value = {
     formula: `SUM(${CELLS.TOTAL_COLUMNS.COMPANY_NIS}${startRow}:${CELLS.TOTAL_COLUMNS.COMPANY_NIS}${endRow})`,
   };
+  worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+ (endRow+1)).numFmt = '0.00';
+
   const style = {
     BACKGROUND:'F0F0F0',
     FONT: {bold:true},
@@ -243,6 +264,7 @@ function fillFooter(worksheet, startRow, eshelRowIndex){
   worksheet.getCell(`${CELLS.FOOTER_LABLES.REFUND_VALUE_COLUMN}${(startRow + newRows.indexOf(refundRow))}`).value = {
     formula: `${CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS}${startRow-1}+${CELLS.TOTAL_COLUMNS.COMPANY_NIS}${eshelRowIndex}-${CELLS.FOOTER_LABLES.ADVANCE_VALUE_COLUMN}${(startRow + newRows.indexOf(advanceRow))}`,
   };
+  worksheet.getCell(`${CELLS.FOOTER_LABLES.REFUND_VALUE_COLUMN}${(startRow + newRows.indexOf(refundRow))}`).numFmt = '0.00';
 }
 
 function fillWorkbook(workbook, {details, currencyRates, expenses}){

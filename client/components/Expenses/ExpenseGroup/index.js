@@ -28,12 +28,13 @@ export default class ExpenseGroup extends Component {
     return (
       <FormGroup
           controlId={title}
+          style={{borderBottom:'1px solid #dcdcdc'}}
       >
         <Col sm={12}>
           <ButtonToolbar>
           <h3 className="col-sm-8">{title}</h3>
-          <Col sm={3}>
-            <Button onClick={::this.addItem}><Glyphicon glyph="star" /> Add</Button>
+          <Col style={{marginTop:15}}  sm={3}>
+            <Button onClick={::this.addItem}>Add &nbsp;<Glyphicon glyph="plus" /></Button>
           </Col>
           </ButtonToolbar>
         </Col>

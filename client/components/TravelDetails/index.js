@@ -54,7 +54,7 @@ class TravelDetails extends Component {
         numberOfPassengers: 1,
         passengerDepartment: {
           pristine: false,
-          value: '',
+          value: consts.departments[0],
         },
         passengerName: {
           pristine: false,
@@ -160,12 +160,14 @@ class TravelDetails extends Component {
       if (err) {
         console.error(err);
       }
-      if (res.body && res.body.CURRENCIES && res.body.CURRENCIES.CURRENCY===undefined){
-        console.error(res.body.CURRENCIES);
-      }
 
-      if(!err && res.body && res.body.CURRENCIES && res.body.CURRENCIES.CURRENCY){
-        this.props.changeCurrency({usd: res.body.CURRENCIES.CURRENCY[0].RATE[0]});
+      if(!err && res.body && res.body.rate){
+        try {
+          const usd = parseFloat(res.body.rate);
+          this.props.changeCurrency({usd});
+        } catch (e) {
+          this.props.changeCurrency({usd: undefined});
+        }
       }else {
         this.props.changeCurrency({usd: undefined});
       }
@@ -245,11 +247,11 @@ class TravelDetails extends Component {
             <ControlLabel className="col-sm-4">Passenger Name</ControlLabel>
             <Col sm={8}>
             <FormControl
+                defaultValue={passengerName.value}
                 onChange={this.handleNameChange}
                 placeholder="Firstname and Lastname"
                 required
                 type="text"
-                value={passengerName.value}
             />
             </Col>
         </FormGroup>
@@ -261,9 +263,9 @@ class TravelDetails extends Component {
             <Col sm={8}>
                 <FormControl
                     componentClass="select"
+                    defaultValue={passengerDepartment.value}
                     onChange={this.handleDepartmentChange}
                     placeholder="R&D\ PS\ Sales\ ..."
-                    value={passengerDepartment.value}
                 >
                   {
                     consts.departments.map(department=><option key={department} value={department}>{department}</option>)
@@ -278,10 +280,10 @@ class TravelDetails extends Component {
             validationState={getTextValidationState(country.value, country.pristine)}
         >
             <FormControl
+                defaultValue={country.value}
                 onChange={this.handleCountryChange}
                 placeholder="US\ IL\ ..."
                 type="text"
-                value={country.value}
             />
         </FormGroup>
         <FormGroup
@@ -290,20 +292,20 @@ class TravelDetails extends Component {
             validationState={getTextValidationState(city.value, city.pristine)}
         >
             <FormControl
+                defaultValue={city.value}
                 onChange={this.handleCityChange}
                 placeholder="NY\ Tel-Aviv\ ..."
                 type="text"
-                value={city.value}
             />
         </FormGroup>
         <FormGroup controlId="number-of-passengers">
             <ControlLabel className="col-sm-4">Number of Passengers</ControlLabel>
             <Col sm={8}>
                 <FormControl
+                    defaultValue={numberOfPassengers}
                     min={0}
                     onChange={this.handleNumberPassengersChange}
                     type="number"
-                    value={numberOfPassengers}
                 />
             </Col>
         </FormGroup>
@@ -312,6 +314,7 @@ class TravelDetails extends Component {
             <Col sm={8}>
                 <DatePicker
                     customInput={<DatePickerButton />}
+                    defaultValue={departureDate}
                     endDate={returnDate}
                     onChange={this.handleDepartureChange}
                     selected={departureDate}
@@ -325,6 +328,7 @@ class TravelDetails extends Component {
             <Col sm={8}>
                 <DatePicker
                     customInput={<DatePickerButton />}
+                    defaultValue={returnDate}
                     endDate={returnDate}
                     onChange={this.handleReturnChange}
                     selected={returnDate}
@@ -346,10 +350,10 @@ class TravelDetails extends Component {
             <ControlLabel className="col-sm-4">Travel Purpose</ControlLabel>
             <Col sm={8}>
             <FormControl
+                defaultValue={purpose.value}
                 onChange={this.handlePurposeChange}
                 placeholder="Sisense Connect event\ Strata conference\ ..."
                 type="text"
-                value={purpose.value}
             />
             </Col>
         </FormGroup>
@@ -358,7 +362,9 @@ class TravelDetails extends Component {
             className="pull-right"
             disabled={!this.isFormValid()}
             onClick={this.handleSubmitClick}
-        >Continue</Button>
+        >
+          Continue
+        </Button>
       </Form>
     );
   }

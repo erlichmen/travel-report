@@ -11,12 +11,12 @@ export default class Expense extends Component {
     currencies: ['usd','nis'],
   }
 
-  handlePropertyChange(e){
+  handlePropertyChange(type, value){
     let {item} = this.props;
-    if (e.target.id === 'cost'){
-      item[e.target.id] = parseFloat(e.target.value);
+    if (type === 'cost'){
+      item[type] = parseFloat(value);
     }else{
-      item[e.target.id] = e.target.value;
+      item[type] = value;
     }
     this.props.onChange(item);
   }
@@ -25,14 +25,13 @@ export default class Expense extends Component {
     const {item, currencies} = this.props;
 
     return (
-      <Col sm={12}>
+      <Col sm={12} style={{marginBottom:10}}>
         <ControlLabel className="col-sm-1">Type</ControlLabel>
         <Col sm={8}>
         <FormControl
-            id="name"
-            onChange={::this.handlePropertyChange}
+            defaultValue={item.name}
+            onChange={e=>::this.handlePropertyChange('name', e.target.value)}
             required
-            value={item['name']}
         />
         </Col>
         <Col sm={3}>
@@ -42,23 +41,21 @@ export default class Expense extends Component {
         <ControlLabel className="col-sm-1">Cost</ControlLabel>
         <Col sm={3}>
           <FormControl
-              id="cost"
-              onChange={::this.handlePropertyChange}
+              defaultValue={item.cost}
+              onChange={e=>::this.handlePropertyChange('cost', e.target.value)}
               required
               type="number"
-              value={item['cost']}
           />
         </Col>
         <Col sm={3}>
           <FormControl
               componentClass="select"
-              id="currency"
-              onChange={::this.handlePropertyChange}
+              defaultValue={item.currency||currencies[0]}
+              onChange={e=>::this.handlePropertyChange('currency', e.target.value)}
               required
-              value={item['currency']}
           >
             {
-              currencies.map(currency=><option value={currency}>{currency.toUpperCase()}</option>)
+              currencies.map(currency=><option key={currency} value={currency}>{currency.toUpperCase()}</option>)
             }
           </FormControl>
         </Col>
@@ -68,10 +65,9 @@ export default class Expense extends Component {
 
         <Col sm={12}>
           <FormControl
-              id="comments"
-              onChange={::this.handlePropertyChange}
+              defaultValue={item.comments}
+              onChange={e=>::this.handlePropertyChange('comments', e.target.value)}
               placeholder="Comments"
-              value={item['comments']}
           />
         </Col>
       </Col>

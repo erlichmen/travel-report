@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import request from 'superagent';
-// import mockData from '../../../docs/sofi.js';
-import { Col, Nav, NavItem } from 'react-bootstrap';
+// import mockData from '../../../docs/multiCurrency';
+import { Col, Nav, NavItem, Modal, Button } from 'react-bootstrap';
 
 import './style.css';
 import TravelDetails from '../../components/TravelDetails';
@@ -33,33 +33,62 @@ export default class App extends Component {
     window.URL.revokeObjectURL(url);
   }
 
-  handleSendRequest(){
+  handleSendRequest(data){
+    // data = mockData;
     request.post('/api/post')
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
-    // .send(mockData)
-    .send(this.state.data)
+    .send(data)
     .end((err, res)=>{
-      if (err) {
-        console.error(err);
+      if (res && res.body && !res.body.err) {
+        this.setState({
+          alert:{
+            type: 'success',
+            title: 'Travel Report Sent!',
+            message:`Great doing buisness with you,
+            hope you had a nice trip and that you enjoyed filling out the new report.
+            `,
+          },
+        });
       }else{
-        console.log(res.body);
+        console.error(err || res.body.err);
+        this.setState({
+          alert:{
+            type: 'danger',
+            title: 'Something went wrong!',
+            message:`It might be the server but,
+            it also just might be that one of the parameters you entered is just no good,
+            look it over and retry or tell Soophie that something wierd is going on.
+            (not that I'm bleaming or anything...)
+            `,
+          },
+        });
       }
     });
   }
 
-  handleExportRequest(){
+  handleExportRequest(data){
+    // data = mockData;
     request.post('/api/export')
     .set('Content-Type', 'application/json')
     .responseType('blob')
-    // .send(mockData)
-    .send(this.state.data)
+    .send(data)
     .end((err, res)=>{
       if (err) {
         console.error(err);
+        this.setState({
+          alert:{
+            type: 'danger',
+            title: 'Something went wrong!',
+            message:`It might be the server but,
+            it also just might be that one of the parameters you entered is just no good,
+            look it over and retry or tell Soophie that something wierd is going on.
+            (not that I'm bleaming or anything...)
+            `,
+          },
+        });
       }else{
-        // console.log(res.body);
-        const {details} = this.state.data;
+        const {details} = data;
         const datesString = `${new Date(details.departureDate).toLocaleDateString().replace(/\//g,'_')}-${new Date(details.returnDate).toLocaleDateString().replace(/\//g,'_')}`;
 
         this.saveData(res.xhr.response, `${details.name} ${datesString}.xlsx`);
@@ -78,18 +107,24 @@ export default class App extends Component {
     this.setState({ data: newData, stage: RATES });
   }
 
-  handleRatesSubmit(data) {
+  handleRatesSubmit(data, back) {
     const { data: oldData } = this.state;
 
     const newData = Object.assign({}, oldData, { currencyRates: data });
-    this.setState({ data: newData, stage: EXPENSES });
+    this.setState({ data: newData, stage: back?DEFAULT_STAGE:EXPENSES });
   }
 
-  handleExpensesSubmit(data){
+  handleExpensesSubmit(data, type){
     const { data: oldData } = this.state;
-
     const newData = Object.assign({}, oldData, { expenses: data });
-    this.setState({ data: newData, stage: DEFAULT_STAGE });
+
+    if (type==='back'){
+      this.setState({ data: newData, stage: RATES });
+    }else if (type==='submit') {
+      this.handleSendRequest(newData);
+    }else if (type==='download') {
+      this.handleExportRequest(newData);
+    }
   }
 
   changeCurrency(currency){
@@ -102,8 +137,14 @@ export default class App extends Component {
     this.setState({ data: newData });
   }
 
+  hideAlert(){
+    this.setState({
+      alert: undefined,
+    });
+  }
+
   render() {
-    const { stage, data } = this.state;
+    const { stage, data, alert } = this.state;
     const currencies = data.currencyRates? Object.keys(data.currencyRates).filter(key=>data.currencyRates[key]!==undefined).concat(['nis']):[];
 
     return (
@@ -115,27 +156,43 @@ export default class App extends Component {
                     onSelect={this.handleSelect}
                     stacked
                 >
-                    <NavItem eventKey={DEFAULT_STAGE}>Travel's Details</NavItem>
-                    <NavItem eventKey={RATES}>Exchange Rates</NavItem>
-                    <NavItem eventKey={EXPENSES}>Expenses</NavItem>
                     <NavItem
-                      onClick={::this.handleExportRequest}
+                        disabled
+                        eventKey={DEFAULT_STAGE}
                     >
-                      Download Travel Report
+                      Travel's Details
                     </NavItem>
                     <NavItem
-                      onClick={::this.handleSendRequest}
+                        disabled
+                        eventKey={RATES}
                     >
-                      Submit Travel Report
+                      Exchange Rates
+                    </NavItem>
+                    <NavItem
+                        disabled
+                        eventKey={EXPENSES}
+                    >
+                      Expenses
                     </NavItem>
                 </Nav>
             </Col>
             <Col sm={10}>
+              <Modal onHide={::this.hideAlert} show={alert!==undefined}>
+                <Modal.Header bsClass={`modal-header ${alert&&`alert-${alert.type}`}`} closeButton>
+                  <Modal.Title>{alert&&alert.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {alert&&alert.message.split('\n').map((line, index)=><p key={index}>{line}</p>)}
+                </Modal.Body>
+                <Modal.Footer bsClass={`modal-footer ${alert&&`alert-${alert.type}`}`}>
+                  <Button onClick={::this.hideAlert}>Close</Button>
+                </Modal.Footer>
+              </Modal>
                 { stage === DEFAULT_STAGE &&
                 <TravelDetails
+                    changeCurrency={::this.changeCurrency}
                     details={data.details}
                     onSubmit={::this.handleTravelsDetailsSubmit}
-                    changeCurrency={::this.changeCurrency}
                 />
                 }
                 { stage === RATES &&

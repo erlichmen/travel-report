@@ -17,7 +17,7 @@ module.exports = {
         `,
         from:    'Travel Report <travel@sisense.com>',
         to:      'Soophie <sophie.shachar@sisense.com>',
-        // cc:      'else <else@your-email.com>',
+        cc:      `${details.name} <${details.name.split(' ').join('.')}@sisense.com>`,
         subject: `Travel Report - ${details.name}`,
         attachment:
         [

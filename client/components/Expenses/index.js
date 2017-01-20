@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Button} from 'react-bootstrap';
+import { Form, Button, Row } from 'react-bootstrap';
 import ExpenseGroup from './ExpenseGroup';
 
 export default class Expenses extends Component {
@@ -44,7 +44,7 @@ export default class Expenses extends Component {
     return true;
   }
 
-  handleSubmitClick(){
+  handleSubmitClick(type){
     const { onSubmit } = this.props;
     const {
       flights,
@@ -64,7 +64,7 @@ export default class Expenses extends Component {
       comunication,
       conference,
       other,
-    });
+    }, type);
   }
 
   render(){
@@ -125,12 +125,35 @@ export default class Expenses extends Component {
               title="Other"
           />
 
-        <Button
-            bsStyle="primary"
-            className="pull-right"
-            disabled={!this.isFormValid()}
-            onClick={::this.handleSubmitClick}
-        >Continue</Button>
+        <Row>
+          <Button
+              bsStyle="info"
+              className="pull-left"
+              disabled={!this.isFormValid()}
+              style={{margin:'0 5px'}}
+              onClick={()=>::this.handleSubmitClick('back')}
+          >
+            Back
+          </Button>
+          <Button
+              bsStyle="primary"
+              className="pull-right"
+              disabled={!this.isFormValid()}
+              style={{margin:'0 5px'}}
+              onClick={()=>::this.handleSubmitClick('submit')}
+          >
+            Submit to Soophie
+          </Button>
+          <Button
+              bsStyle="primary"
+              className="pull-right"
+              disabled={!this.isFormValid()}
+              style={{margin:'0 5px'}}
+              onClick={()=>::this.handleSubmitClick('download')}
+          >
+            Download
+          </Button>
+        </Row>
       </Form>
     );
   }

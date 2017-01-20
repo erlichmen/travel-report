@@ -32,10 +32,10 @@ export default class ExpenseGroup extends Component {
       >
         <Col sm={12}>
           <ButtonToolbar>
-          <h3 className="col-sm-8">{title}</h3>
-          <Col style={{marginTop:15}}  sm={3}>
+          <Col style={{marginTop:15}} sm={2}>
             <Button onClick={::this.addItem}>Add &nbsp;<Glyphicon glyph="plus" /></Button>
           </Col>
+          <h3 className="col-sm-8">{title}</h3>
           </ButtonToolbar>
         </Col>
         {

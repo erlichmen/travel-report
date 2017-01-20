@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, FormGroup, FormControl, ControlLabel, Button, Col, HelpBlock } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, ControlLabel, Button, Col, HelpBlock,
+ Glyphicon, Row } from 'react-bootstrap';
 
 import NewRate from './NewRate';
 
@@ -37,9 +38,11 @@ class ExchangeRates extends Component {
     return Boolean(this.state.usd);
   }
 
-  handleSubmitClick = () => {
+  handleSubmitClick = (back=false) => {
     const { onSubmit } = this.props;
-    if (!this.isFormValid()) {
+    if (back && !this.isFormValid()) {
+      return onSubmit(dataToReturn, back);
+    }else if (!this.isFormValid()) {
       return;
     }
 
@@ -60,7 +63,7 @@ class ExchangeRates extends Component {
 
     addedRates.forEach(({ name, value }) => dataToReturn[name] = value);
 
-    onSubmit(dataToReturn);
+    onSubmit(dataToReturn, back);
   }
 
   handleAddRate = () => {
@@ -91,7 +94,7 @@ class ExchangeRates extends Component {
 
     const newAddedRates = [
       ...oldAddedRates.slice(0, index),
-      { name, value: newValue },
+      { name, value: parseFloat(newValue) },
       ...oldAddedRates.slice(index + 1),
     ];
 
@@ -133,10 +136,10 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">USD</ControlLabel>
             <Col sm={2}>
             <FormControl
+                defaultValue={usd}
                 onChange={e=>this.handleCurrencyChange(e, 'usd')}
                 required
                 type="number"
-                value={usd}
             />
             </Col>
             <HelpBlock>This is required</HelpBlock>
@@ -147,9 +150,9 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">EURO</ControlLabel>
             <Col sm={2}>
             <FormControl
+                defaultValue={euro}
                 onChange={e=>this.handleCurrencyChange(e, 'euro')}
                 type="number"
-                value={euro}
             />
             </Col>
         </FormGroup>
@@ -159,9 +162,9 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">GBP</ControlLabel>
             <Col sm={2}>
             <FormControl
+                defaultValue={gbp}
                 onChange={e=>this.handleCurrencyChange(e, 'gbp')}
                 type="number"
-                value={gbp}
             />
             </Col>
         </FormGroup>
@@ -171,9 +174,9 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">UAH</ControlLabel>
             <Col sm={2}>
             <FormControl
+                defaultValue={uah}
                 onChange={e=>this.handleCurrencyChange(e, 'uah')}
                 type="number"
-                value={uah}
             />
             </Col>
         </FormGroup>
@@ -183,22 +186,40 @@ class ExchangeRates extends Component {
                 <ControlLabel className="col-sm-3 form-label">{name.toUpperCase()}</ControlLabel>
                 <Col sm={2}>
                     <FormControl
-                        type="number"
-                        value={value}
+                        defaultValue={value}
                         onChange={e => this.changeRate(name, e.target.value)}
+                        type="number"
                     />
                 </Col>
                 <Button onClick={() => this.removeRate(name)}>Remove</Button>
             </FormGroup>
           );
         })}
-        <Button
-            bsStyle="primary"
-            className="pull-right"
-            disabled={!this.isFormValid()}
-            onClick={this.handleSubmitClick}
-        >Continue</Button>
-        <Button onClick={this.handleAddRate}>Add Rate</Button>
+
+        <FormGroup>
+          <Col sm={3} />
+          <Col sm={9}>
+            <Button onClick={this.handleAddRate}>Add Rate &nbsp;<Glyphicon glyph="plus" /></Button>
+          </Col>
+        </FormGroup>
+        <Row>
+          <Button
+              bsStyle="info"
+              className="pull-left"
+              onClick={()=>::this.handleSubmitClick(true)}
+          >
+            Back
+          </Button>
+          <Button
+              bsStyle="primary"
+              className="pull-right"
+              disabled={!this.isFormValid()}
+              onClick={()=>::this.handleSubmitClick(false)}
+          >
+            Continue
+          </Button>
+        </Row>
+
         { isAdding && <NewRate closeModal={this.handleAddedRate} /> }
       </Form>
     );

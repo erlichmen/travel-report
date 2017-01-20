@@ -8,7 +8,7 @@
     "server": "node index.js",
     "start": "webpack --progress --colors && node index.js",
     "prod": "set port=80&& webpack --progress --colors && node index.js",
-    "dev": "concurrently \"webpack -d --progress --colors --watch\" \"nodemon index.js\"",
+    "dev": "concurrently \"nodemon\" \"webpack -d --progress --colors --watch\"",
     "build": "NODE_ENV=production webpack --progress --colors"
   },
   "repository": {
@@ -57,7 +57,8 @@
     "stream-http": "^2.4.0",
     "style-loader": "^0.13.1",
     "superagent": "^3.0.0",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "xml2js": "^0.4.17"
   },
   "author": {
     "name": "Dean Shub"

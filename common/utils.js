@@ -75,12 +75,17 @@ function fillPersonalDetails(worksheet, details, currencyRates) {
   if (currencyRates.uah){
     worksheet.getCell(CELLS.CURRENCY_UAH).value = currencyRates.uah;
   }
-  if (currencyRates.other){
-    currencyRates.other.forEach((currency, index)=>{
-      worksheet.getCell(CELLS.CURRENCY_OTHER_NAME[index]).value = currency.name;
-      worksheet.getCell(CELLS.CURRENCY_OTHER_VALUE[index]).value = currency.rate;
-    });
-  }
+
+  Object.keys(currencyRates).filter(currency=>{
+    const currencyName = currency.toUpperCase();
+    return currencyName!=='USD' && currencyName!=='EURO' &&
+      currencyName!=='GBP' && currencyName!=='UAH';
+  }).forEach((currencyName, index)=>{
+    const upperCaseCurrency = currencyName.toUpperCase();
+    worksheet.getCell(CELLS.CURRENCY_OTHER_NAME[index]).value = currencyName;
+    worksheet.getCell(CELLS.CURRENCY_OTHER_VALUE[index]).value = currencyRates[currencyName];
+    CELLS[`CURRENCY_${upperCaseCurrency}`] = CELLS.CURRENCY_OTHER_VALUE[index];
+  });
 }
 
 function addCompanyExpenses(worksheet, expenses, title, rowNumber) {
@@ -90,11 +95,12 @@ function addCompanyExpenses(worksheet, expenses, title, rowNumber) {
 function addExpenses(worksheet, expenses, title, rowNumber, company) {
   if (expenses){
     const newRows = expenses.map((expense)=>{
+      const upperCaseCurrency = (expense.currency||'usd').toUpperCase();
       let rowValues = [];
       rowValues[CELLS.EXPENSES_COLUMNS.TITLE]=title;
       rowValues[CELLS.EXPENSES_COLUMNS.NAME] = expense.description ? `${expense.name}, ${expense.description} - ${(new Date(expense.date)).toLocaleDateString()}`: expense.name;
       if (!company){
-        rowValues[CELLS.EXPENSES_COLUMNS.COST[(expense.currency||'usd').toUpperCase()]] = expense.cost;
+        rowValues[CELLS.EXPENSES_COLUMNS.COST[upperCaseCurrency]] = expense.cost;
       }
       if (expense.comments){
         rowValues[CELLS.EXPENSES_COLUMNS.COMMENTS] = expense.comments;
@@ -106,12 +112,23 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
 
     expenses.forEach((expense, index)=>{
       const currentRowNumber = rowNumber+index;
-      if ((expense.currency||'usd').toUpperCase()==='USD'){
+      const upperCaseCurrency = (expense.currency||'usd').toUpperCase();
+      // console.log(expense.currency, expense.cost, CELLS[`CURRENCY_${upperCaseCurrency}`]);
+      if (upperCaseCurrency==='USD'){
         worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).value={
           formula: `$${CELLS.CURRENCY_USD.split('').join('$')}*$${CELLS.TOTAL_COLUMNS.USD}${currentRowNumber}`,
         };
         worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).numFmt = '0.00';
-      } else if ((expense.currency||'usd').toUpperCase()==='NIS'){
+      } else if (upperCaseCurrency==='NIS'){
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).value={
+          formula: `$${CELLS.TOTAL_COLUMNS.NIS}${currentRowNumber}/$${CELLS.CURRENCY_USD.split('').join('$')}`,
+        };
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).numFmt = '0.00';
+      } else{
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).value={
+          formula: `$${CELLS[`CURRENCY_${upperCaseCurrency}`].split('').join('$')}*${expense.cost}`,
+        };
+        worksheet.getCell(CELLS.TOTAL_COLUMNS.NIS+currentRowNumber).numFmt = '0.00';
         worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).value={
           formula: `$${CELLS.TOTAL_COLUMNS.NIS}${currentRowNumber}/$${CELLS.CURRENCY_USD.split('').join('$')}`,
         };

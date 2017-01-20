@@ -42,11 +42,31 @@ app.post('/api/post', (req, res)=>{
 
 app.get('/api/rate/:curr/:year/:month/:day', (req, res)=>{
   const url = `http://www.boi.org.il/currency.xml?rdate=${req.params.year}${req.params.month}${req.params.day}&curr=${req.params.curr}`;
-  request.get(url,(err, response, body)=>{
-    xml2js.parseString(body,(err, result)=>{
-      console.log(result);
-      res.json(result);
+  var requestPromise = new Promise(function (resolve, reject) {
+    request.get(url,(err, response, body)=>{
+      if(err || !body){
+        reject (err||'rate body is empty');
+      }else{
+        resolve(body);
+      }
     });
+  });
+  requestPromise.then(function (body) {
+    return new Promise(function (resolve, reject) {
+      xml2js.parseString(body, (err, result)=>{
+        if (result.CURRENCIES.CURRENCY[0].RATE[0]){
+          const rate = parseFloat(result.CURRENCIES.CURRENCY[0].RATE[0]);
+          resolve(rate);
+        }else{
+          reject(err||'no rate found');
+        }
+      });
+    });
+  }).then(function (rate) {
+    res.json({rate});
+  }).catch(function (err) {
+    console.error(err);
+    res.json({err});
   });
 });
 

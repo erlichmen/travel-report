@@ -202,6 +202,17 @@ class ExchangeRates extends Component {
             <Button onClick={this.handleAddRate}>Add Rate &nbsp;<Glyphicon glyph="plus" /></Button>
           </Col>
         </FormGroup>
+
+        <Row>
+          <Col sm={2} />
+          <Col sm={3}>
+            <a href="http://www.boi.org.il/he/Markets/ExchangeRates/Pages/Default.aspx" target="_blank">Bank of Israel</a>
+          </Col>
+          <Col sm={3}>
+            <a href="https://www.oanda.com/currency/converter/" target="_blank">Other currencies</a>
+          </Col>
+        </Row>
+
         <Row>
           <Button
               bsStyle="info"

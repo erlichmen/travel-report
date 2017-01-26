@@ -7,6 +7,8 @@ const xml2js = require('xml2js');
 const utils = require('./common/utils');
 const mail = require('./common/mail');
 
+process.setmaxlisteners(0);
+
 const app = express();
 const PORT = process.env.port||8889;
 app.use( bodyParser.json() );

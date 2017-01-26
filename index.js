@@ -7,7 +7,7 @@ const xml2js = require('xml2js');
 const utils = require('./common/utils');
 const mail = require('./common/mail');
 
-process.setmaxlisteners(0);
+process.setMaxListeners(0);
 
 const app = express();
 const PORT = process.env.port||8889;

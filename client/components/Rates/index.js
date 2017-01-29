@@ -136,10 +136,10 @@ class ExchangeRates extends Component {
             <ControlLabel className="col-sm-3">USD</ControlLabel>
             <Col sm={2}>
             <FormControl
-                defaultValue={usd}
+                defaultValue={usd||0}
                 onChange={e=>this.handleCurrencyChange(e, 'usd')}
                 required
-                type="number"
+                step="0.01"
             />
             </Col>
             <HelpBlock>This is required</HelpBlock>
@@ -152,7 +152,7 @@ class ExchangeRates extends Component {
             <FormControl
                 defaultValue={euro}
                 onChange={e=>this.handleCurrencyChange(e, 'euro')}
-                type="number"
+                step="0.01"
             />
             </Col>
         </FormGroup>
@@ -164,7 +164,7 @@ class ExchangeRates extends Component {
             <FormControl
                 defaultValue={gbp}
                 onChange={e=>this.handleCurrencyChange(e, 'gbp')}
-                type="number"
+                step="0.01"
             />
             </Col>
         </FormGroup>
@@ -176,7 +176,7 @@ class ExchangeRates extends Component {
             <FormControl
                 defaultValue={uah}
                 onChange={e=>this.handleCurrencyChange(e, 'uah')}
-                type="number"
+                step="0.01"
             />
             </Col>
         </FormGroup>
@@ -188,7 +188,7 @@ class ExchangeRates extends Component {
                     <FormControl
                         defaultValue={value}
                         onChange={e => this.changeRate(name, e.target.value)}
-                        type="number"
+                        step="0.01"
                     />
                 </Col>
                 <Button onClick={() => this.removeRate(name)}>Remove</Button>

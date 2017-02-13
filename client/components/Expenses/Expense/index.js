@@ -44,7 +44,6 @@ export default class Expense extends Component {
               defaultValue={item.cost}
               onChange={e=>::this.handlePropertyChange('cost', e.target.value)}
               required
-              type="number"
           />
         </Col>
         <Col sm={3}>

@@ -64,6 +64,16 @@ function fillPersonalDetails(worksheet, details, currencyRates) {
   worksheet.getCell(CELLS.TOTAL_NUMBER_OF_DAYS).value = details.totalNumberOfDays;
 
   worksheet.getCell(CELLS.PURPOSE).value = details.purpose;
+  const conferences = details.conferences.trim();
+  if (conferences){
+    worksheet.getCell(CELLS.CONFRENCES.TITLE).value = 'Conferenes';
+    worksheet.getCell(CELLS.CONFRENCES.VALUE).value = conferences;
+  }
+  const customers = details.customers.trim();
+  if (customers){
+    worksheet.getCell(CELLS.CUSTOMERS.TITLE).value = 'Customers';
+    worksheet.getCell(CELLS.CUSTOMERS.VALUE).value = customers;
+  }
 
   worksheet.getCell(CELLS.CURRENCY_USD).value = currencyRates.usd;
   if (currencyRates.euro){
@@ -133,6 +143,13 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
           formula: `$${CELLS.TOTAL_COLUMNS.NIS}${currentRowNumber}/$${CELLS.CURRENCY_USD.split('').join('$')}`,
         };
         worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).numFmt = '0.00';
+
+        const originallyText = `(Originally ${expense.cost} in ${upperCaseCurrency})`;
+        if (expense.comments===undefined){
+          worksheet.getCell(`G${currentRowNumber}`).value = originallyText;
+        }else{
+          worksheet.getCell(`G${currentRowNumber}`).value = `${expense.comments} ${originallyText}`;
+        }
       }
       if (expense.cost){
         if (company){
@@ -213,7 +230,7 @@ function addTotalRow(worksheet, title, startRow, rowsToTotal) {
   styleCell(worksheet, `E${startRow}`, style);
   styleCell(worksheet, `F${startRow}`, style);
   styleCell(worksheet, `G${startRow}`, Object.assign({},style, {MERGE: `G${startRow}:I${startRow}`}));
-  styleCell(worksheet, `J${startRow}`, style);
+  // styleCell(worksheet, `J${startRow}`, style);
   return 1;
 }
 
@@ -253,7 +270,7 @@ function addTempTotalRow(worksheet, title, startRow, endRow){
   styleCell(worksheet, `E${endRow+1}`, style);
   styleCell(worksheet, `F${endRow+1}`, style);
   styleCell(worksheet, `G${endRow+1}`, Object.assign({},style, {MERGE: `G${endRow+1}:I${endRow+1}`}));
-  styleCell(worksheet, `J${endRow+1}`, style);
+  // styleCell(worksheet, `J${endRow+1}`, style);
 
   return 1;
 }
@@ -337,7 +354,7 @@ function fillWorkbook(workbook, {details, currencyRates, expenses}){
       startRow = startRow + rowsAddedCounter;
       rowsAddedCounter = 0;
       const eshelExpense = Object.assign({}, dummyExpense[0], {comments:'65$ per day', cost:65});
-      rowsAddedCounter += addCompanyExpenses(worksheet, [eshelExpense], '"Eshel"', startRow + rowsAddedCounter);
+      rowsAddedCounter += addCompanyExpenses(worksheet, [eshelExpense], '"Per diem"', startRow + rowsAddedCounter);
       eshelRowIndex = startRow;
       if (rowsAddedCounter>0){
         rowsToTotal.push({start:startRow ,end:startRow + rowsAddedCounter});

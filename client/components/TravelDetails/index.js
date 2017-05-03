@@ -64,10 +64,19 @@ class TravelDetails extends Component {
           pristine: false,
           value: '',
         },
+        conferences:{
+          pristine: false,
+          value:'',
+        },
+        customers:{
+          pristine: false,
+          value:'',
+        },
         returnDate: moment(),
       };
     } else {
-      const { name, department, destination, numberOfPassengers, departureDate, returnDate, purpose } = details;
+      const { name, department, destination, numberOfPassengers, departureDate,
+        returnDate, purpose, conferences, customers} = details;
       this.state = {
         city: {
           pristine: true,
@@ -90,6 +99,14 @@ class TravelDetails extends Component {
         purpose: {
           pristine: true,
           value: purpose,
+        },
+        conferences:{
+          pristine: true,
+          value: conferences,
+        },
+        customers:{
+          pristine: true,
+          value: customers,
         },
         returnDate: moment(returnDate),
       };
@@ -130,6 +147,22 @@ class TravelDetails extends Component {
 
   handlePurposeChange = e => {
     this.setState({ purpose: {
+      pristine: true,
+      value: e.target.value,
+    },
+    });
+  }
+
+  handleConferencesChange = e => {
+    this.setState({ conferences: {
+      pristine: true,
+      value: e.target.value,
+    },
+    });
+  }
+
+  handleCustomersChange = e => {
+    this.setState({ customers: {
       pristine: true,
       value: e.target.value,
     },
@@ -183,11 +216,13 @@ class TravelDetails extends Component {
   }
 
   isFormValid = () => {
-    const { passengerName, passengerDepartment, country, city, purpose } = this.state;
+    const { passengerName, passengerDepartment, country, city, purpose, conferences, customers } = this.state;
     return isValidText(passengerName.value) &&
            isValidText(passengerDepartment.value) &&
            isValidText(city.value) &&
            isValidText(country.value) &&
+          //  isValidText(conferences.value) &&
+          //  isValidText(customers.value) &&
            isValidText(purpose.value);
   }
 
@@ -206,6 +241,8 @@ class TravelDetails extends Component {
       departureDate,
       returnDate,
       purpose: { value: purpose },
+      conferences: { value: conferences },
+      customers: { value: customers },
     } = this.state;
     const totalNumberOfDays = returnDate.diff(departureDate, 'days') - 1;
 
@@ -220,7 +257,9 @@ class TravelDetails extends Component {
       departureDate: departureDate.valueOf(),
       returnDate: returnDate.valueOf(),
       purpose,
-      totalNumberOfDays
+      conferences,
+      customers,
+      totalNumberOfDays,
     });
   }
 
@@ -234,6 +273,8 @@ class TravelDetails extends Component {
       departureDate,
       returnDate,
       purpose,
+      conferences,
+      customers,
     } = this.state;
 
     const numberOfDays = returnDate.diff(departureDate, 'days') + 1;
@@ -352,7 +393,33 @@ class TravelDetails extends Component {
             <FormControl
                 defaultValue={purpose.value}
                 onChange={this.handlePurposeChange}
-                placeholder="Sisense Connect event\ Strata conference\ ..."
+                placeholder="Convention and Customer\ Integration with NY offiece\ ..."
+                type="text"
+            />
+            </Col>
+        </FormGroup>
+        <FormGroup
+            controlId="conferences"
+        >
+            <ControlLabel className="col-sm-4">Conference\s Name</ControlLabel>
+            <Col sm={8}>
+            <FormControl
+                defaultValue={conferences.value}
+                onChange={this.handleConferencesChange}
+                placeholder="Sisense Connect\ Strata conference\ ..."
+                type="text"
+            />
+            </Col>
+        </FormGroup>
+        <FormGroup
+            controlId="customers"
+        >
+            <ControlLabel className="col-sm-4">Customer\s Name</ControlLabel>
+            <Col sm={8}>
+            <FormControl
+                defaultValue={customers.value}
+                onChange={this.handleCustomersChange}
+                placeholder="GE\ Ebay\ Philips\ Pronhub\ ..."
                 type="text"
             />
             </Col>

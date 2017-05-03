@@ -4,7 +4,7 @@ module.exports = {
       CELL: 'A1',
       VALUE: 'Sisense - Travel Expense Report',
       STYLE:{
-        MERGE: 'A1:K1',
+        MERGE: 'A1:I1',
         BACKGROUND:'AFAFAF',
         ALIGN: { vertical: 'middle', horizontal: 'center' },
         FONT: {bold:true},
@@ -99,7 +99,7 @@ module.exports = {
         CELL: 'A17',
         VALUE: 'Expenses',
         STYLE:{
-          MERGE: 'A17:K17',
+          MERGE: 'A17:I17',
           BACKGROUND:'AFAFAF',
           ALIGN: { vertical: 'middle', horizontal: 'center' },
           FONT: {bold:true},
@@ -147,22 +147,22 @@ module.exports = {
             FONT: {bold:true},
           },
         },
-        PAYMENT_METHOD:{
-          CELL: 'J20',
-          VALUE: 'Payment Method',
-          STYLE:{
-            ALIGN: { vertical: 'middle', horizontal: 'center' },
-            FONT: {bold:true},
-          },
-        },
-        COMMENTS:{
-          CELL: 'K20',
-          VALUE: 'Comments',
-          STYLE:{
-            ALIGN: { vertical: 'middle', horizontal: 'center' },
-            FONT: {bold:true},
-          },
-        },
+        // PAYMENT_METHOD:{
+        //   CELL: 'J20',
+        //   VALUE: 'Payment Method',
+        //   STYLE:{
+        //     ALIGN: { vertical: 'middle', horizontal: 'center' },
+        //     FONT: {bold:true},
+        //   },
+        // },
+        // COMMENTS:{
+        //   CELL: 'K20',
+        //   VALUE: 'Comments',
+        //   STYLE:{
+        //     ALIGN: { vertical: 'middle', horizontal: 'center' },
+        //     FONT: {bold:true},
+        //   },
+        // },
       },
     },
   },
@@ -213,6 +213,14 @@ module.exports = {
   RETURN_DATE: 'C10',
   TOTAL_NUMBER_OF_DAYS: 'C11',
   PURPOSE: 'C13',
+  CONFRENCES:{
+    TITLE:'A14',
+    VALUE:'C14',
+  },
+  CUSTOMERS:{
+    TITLE:'A15',
+    VALUE:'C15',
+  },
 
   CURRENCY_USD: 'I5',
   CURRENCY_EURO: 'I6',

@@ -110,7 +110,7 @@ export default class Expenses extends Component {
               currencies={currencies}
               items={comunication}
               onChange={(comunication)=> this.handleItemsChange('comunication', comunication)}
-              title="Comunication"
+              title="Communication"
           />
           <ExpenseGroup
               currencies={currencies}

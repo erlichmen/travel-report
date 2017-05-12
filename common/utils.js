@@ -13,6 +13,8 @@ function copyTemplateExcel(outputFileName, {details}) {
     workbook.creator = details.name;
     workbook.created = new Date();
     workbook.addWorksheet();
+    const worksheet = workbook.getWorksheet(1);
+    worksheet.views = [{state:'normal'}];
     resolve(workbook);
   });
 }

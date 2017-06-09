@@ -45,7 +45,7 @@ export default class App extends Component {
           alert:{
             type: 'success',
             title: 'Travel Report Sent!',
-            message:`Great doing buisness with you,
+            message:`Great doing business with you,
             hope you had a nice trip and that you enjoyed filling out the new report.
             `,
           },

@@ -36,6 +36,14 @@ function styleCell(worksheet, cell, style={}) {
       fgColor: {argb:`FF${style.BACKGROUND}`},
     };
   }
+  if(style.BORDER){
+    worksheet.getCell(cell).border={
+      top: {style:'thin'},
+      left: {style:'thin'},
+      bottom: {style:'thin'},
+      right: {style:'thin'},
+    };
+  }
 }
 
 function fillStaticLables(worksheet, currentLables) {
@@ -111,6 +119,10 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
       let rowValues = [];
       rowValues[CELLS.EXPENSES_COLUMNS.TITLE]=title;
       rowValues[CELLS.EXPENSES_COLUMNS.NAME] = expense.description ? `${expense.name}, ${expense.description} - ${(new Date(expense.date)).toLocaleDateString()}`: expense.name;
+      if (rowValues[CELLS.EXPENSES_COLUMNS.NAME] && rowValues[CELLS.EXPENSES_COLUMNS.NAME]!=='Travel Insurance'){
+        rowValues[CELLS.EXPENSES_COLUMNS.NAME]+= ` - ${worksheet.userExpens}`;
+        worksheet.userExpens++;
+      }
       if (!company){
         rowValues[CELLS.EXPENSES_COLUMNS.COST[upperCaseCurrency]] = expense.cost;
       }
@@ -171,7 +183,14 @@ function addExpenses(worksheet, expenses, title, rowNumber, company) {
       worksheet.getCell(CELLS.TOTAL_COLUMNS.USD+currentRowNumber).numFmt = '0.00$';
       worksheet.getCell(CELLS.TOTAL_COLUMNS.COMPANY_NIS+currentRowNumber).numFmt = '0.00₪';
       worksheet.getCell(CELLS.TOTAL_COLUMNS.EMPLOYEE_NIS+currentRowNumber).numFmt = '0.00₪';
-      styleCell(worksheet, `G${currentRowNumber}`, {MERGE: `G${currentRowNumber}:I${currentRowNumber}`});
+      styleCell(worksheet, `G${currentRowNumber}`, {MERGE: `G${currentRowNumber}:I${currentRowNumber}`,BORDER:true});
+
+      styleCell(worksheet, `A${currentRowNumber}`, {BORDER:true});
+      styleCell(worksheet, `B${currentRowNumber}`, {BORDER:true});
+      styleCell(worksheet, `C${currentRowNumber}`, {BORDER:true});
+      styleCell(worksheet, `D${currentRowNumber}`, {BORDER:true});
+      styleCell(worksheet, `E${currentRowNumber}`, {BORDER:true});
+      styleCell(worksheet, `F${currentRowNumber}`, {BORDER:true});
     });
 
     return newRows.length;
@@ -303,7 +322,8 @@ function fillFooter(worksheet, startRow, eshelRowIndex){
 
 function fillWorkbook(workbook, {details, currencyRates, expenses}){
   return new Promise((resolve, reject)=>{
-    const worksheet = workbook.getWorksheet(1);
+    let worksheet = workbook.getWorksheet(1);
+    worksheet.userExpens = 1;
 
     fillStaticLables(worksheet);
     fillPersonalDetails(worksheet, details, currencyRates);

@@ -18,8 +18,14 @@ export default class ExpenseGroup extends Component {
 
   addItem(){
     const {items} = this.props;
-    items.push({});
+    items.unshift({});
     this.props.onChange(items);
+  }
+
+  removeItem(index){
+    const {items} = this.props;
+    const newItems = items.slice(0,index).concat(items.slice(index+1));
+    this.props.onChange(newItems);
   }
 
   render() {
@@ -39,12 +45,13 @@ export default class ExpenseGroup extends Component {
           </ButtonToolbar>
         </Col>
         {
-          items.map((item, index)=>
+          items.map((item, index,items)=>
             <Expense
                 currencies={currencies}
-                key={index}
                 item={item}
+                key={`${index}/${items.length}`}
                 onChange={item=>this.handleItemChange(index, item)}
+                onRemove={()=>{this.removeItem(index)}}
             />
           )
         }

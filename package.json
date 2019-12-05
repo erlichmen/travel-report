@@ -3,6 +3,9 @@
   "version": "0.0.5",
   "description": "PM2 Web interface",
   "main": "index.js",
+  "engines": {
+    "node": "12.13.0"
+  },
   "scripts": {
     "webpack": "webpack -d --progress --colors --watch",
     "server": "node index.js",
